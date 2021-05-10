@@ -1,4 +1,4 @@
-	<?php
+<?php
 		session_start();
 		
 		/*
@@ -24,14 +24,22 @@
 			}*/	
             
 			//provera dali se je ulogovao admin
-			if($id == "admin") {
-				if($sifra == "admin") {
-					//baca na pocetnu strnu od admin meni
+			$result0 = $tabela->LogovanjeAdmin($id);
+			$N0 = $result0->num_rows;
+			if($N0 > 0 ) {
+				$row = $result0->fetch_assoc();
+				if ($row['sifra_admin'] == $sifra) {
+					$_SESSION["loggedin"] = true;
+					$_SESSION["tipKorisnika"] = "admin";
+					$_SESSION["idKorisnika"] = $id;
+					$podaci = $row['ime_admin'];
+					$_SESSION["podaciKorisnika"] = $podaci;
+					
+					//probno stoji ovo
 					$passErr = "0";
 					$userErr = "0";
-					$_SESSION["loggedin"] = true;
-					echo "<script language=\"javascript\">alert('Uspesno ulogovan admin.');</script>";
-					//header('Location: RadSaBazomStudenata.php');
+					//echo "<script language=\"javascript\">alert('Uspesno ulogovan student sa mail: ".$id.".');</script>";
+					header('Location: ../pocetna_strana.php');
 				} else {
 					//pogresna sifra
 					$passErr = "1";
@@ -53,8 +61,8 @@
 						//probno stoji ovo
 						$passErr = "0";
 						$userErr = "0";
-						echo "<script language=\"javascript\">alert('Uspesno ulogovan student sa mail: ".$id.".');</script>";
-						//header('Location: Profil.php');
+						//echo "<script language=\"javascript\">alert('Uspesno ulogovan student sa mail: ".$id.".');</script>";
+						header('Location: ../pocetna_strana.php');
 					} else {
 						//pogresna sifra
 						$passErr = "1";
@@ -75,8 +83,8 @@
 							
 							$passErr = "0";
 							$userErr = "0";							
-							echo "<script language=\"javascript\">alert('Uspesno ulogovan profesor sa mail: ".$id."');</script>";						
-							//header('Location: Profil.php');
+							//echo "<script language=\"javascript\">alert('Uspesno ulogovan profesor sa mail: ".$id."');</script>";						
+							header('Location: ../pocetna_strana.php');
 						} else {
 							//pogresna sifra
 							$passErr = "1";
