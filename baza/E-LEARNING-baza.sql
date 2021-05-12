@@ -31,7 +31,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `portal`.`nastavnik` (
   `email_nastavnik` VARCHAR(255) CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci' NOT NULL,
   `sifra_nastavnik` VARCHAR(255) CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci' NOT NULL,
-  `forografija` VARCHAR(255) CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci' NOT NULL,
+  `forografija` VARCHAR(255) CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci' NOT NULL DEFAULT '',
   `ime_nastavnik` VARCHAR(50) CHARACTER SET 'utf8' COLLATE 'utf8_croatian_ci' NOT NULL,
   `prezime_nastavnik` VARCHAR(50) CHARACTER SET 'utf8' COLLATE 'utf8_croatian_ci' NOT NULL,
   PRIMARY KEY (`email_nastavnik`))
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `portal`.`student` (
   `sifra_student` VARCHAR(255) CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci' NOT NULL,
   `indeks` INT NOT NULL,
   `upis` INT NOT NULL,
-  `fotografija` VARCHAR(255) CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci' NOT NULL,
+  `fotografija` VARCHAR(255) CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci' NOT NULL DEFAULT '',
   `ime_student` VARCHAR(50) CHARACTER SET 'utf8' COLLATE 'utf8_croatian_ci' NOT NULL,
   `prezime_student` VARCHAR(50) CHARACTER SET 'utf8' COLLATE 'utf8_croatian_ci' NOT NULL,
   `godina` INT NOT NULL,
