@@ -1,25 +1,11 @@
 <!DOCTYPE html>
 <?php
     session_start();
-
-    // da se promeni lokacija za tabela studenti
-    include 'logovanje/KonekcijaSaBazom.php';
-
-    $tabela = new KonekcijaSaBazom();
-    $id = $_SESSION['idKorisnika'];
-    $tipKorisnika = $_SESSION["tipKorisnika"];
-
-    $profilna = $tabela->uzmiProfilnuSliku($id, $tipKorisnika);
-    if ($profilna == "") {
-	$profilna = "profil.jpg";
-    }
-
 ?>
 <html lang="sr-latin">
 <head>
 <meta charset="utf8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<!--
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -28,16 +14,6 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
--->
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
 <meta name="author" content="Jonathan Stipe" />
 <meta name="copyright" content="&copy; 2012 Jonathan Stipe" />
 <title>E-Ucenje</title>
@@ -65,7 +41,7 @@ body {
 .sideNav a {
    padding: 8px 8px 8px 32px;
    text-decoration: none;
-   font-size: 18px;
+   font-size: 16px;
    color: #000000;
    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
    display: block;
@@ -202,10 +178,7 @@ button {
 <!-- stranicni meni-->
 <div class="sideNav">	
 	<!-- ovde da se ubace konkretni linkovi ka kursevima ... -->
-        <a href="#" class="closeBtn">×</a>
-        <br>
-        <button class="btn btn-light" onclick="window.location.href = 'profill.php';" style="margin-left: 15px"> <img  src="upload/<?php echo $profilna; ?>" width="25px" height="25px"/> <?php echo $_SESSION["podaciKorisnika"]; ?> </button>
-        <a href="proces.php?odjava">Odjava</a>
+	<a href="proces.php?odjava">Odjava</a>
 	<!-- ................................................... -->
 </div>
 
@@ -221,7 +194,7 @@ button {
 			<button class="openSideNav"><i class="fa fa-align-justify"></i></button>
 		</div>
 		<!-- link koje ce da baca na pocetnu stranu od trenutno ulogovanog korisnika -->
-		<a class="right_side" href="pocetna_strana.php"><i class="fa fa-home"></i></a>
+		<a class="right_side" href="#home"><i class="fa fa-home"></i></a>
 	</div>	
 </div>
 <?php
@@ -231,7 +204,7 @@ button {
         <div id="tekst">
             <form action="proces.php" method="POST">
                 <input type="text" name="sifra" placeholder="šifra kursa" style=" margin-left:20px; margin-bottom:15px; width: 60%;">
-                <button class="btn btn-success" type="submit" name="dodaj_kurs_sifra"  style=" margin-left:20px; margin-right:20px; margin-bottom:15px; width: 150px; padding-bottom: 5px"><i class="material-icons">&#xE147;</i>  Dodaj kurs</button>
+                <button class="btn btn-success" type="submit" name="dodaj_kurs_sifra"  style=" margin-left:20px; margin-right:20px; margin-bottom:15px; width: 150px; "><i class="material-icons">&#xE147;</i>  Dodaj kurs</button>
             </form>
         </div>
         <div id="tekst">
