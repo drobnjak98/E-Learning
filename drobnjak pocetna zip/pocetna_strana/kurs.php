@@ -209,8 +209,11 @@ button {
 <div class="sideNav">	
 	<!-- ovde da se ubace konkretni linkovi ka kursevima ... -->
         <a href="#" class="closeBtn">×</a>
-	<a href="proces.php?odjava">Odjava</a>
-        <a href="profil.php">Profil</a>
+        <br>
+        <a href="pocetna_strana.php">Pocetna strana</a>
+        <a href="profill.php">Profil</a>
+        <a href="proces.php?odjava">Odjava</a>
+        
 	<!-- ................................................... -->
 </div>
 <div class="main-content">
@@ -670,6 +673,7 @@ openBtn.addEventListener("click", () => {
 let closeBtn = document.querySelector(".closeBtn");
 closeBtn.addEventListener("click", () => {
    hideNav();
+   i--;
 });
 function showNav() {
    document.querySelector(".sideNav").style.width = "200px";

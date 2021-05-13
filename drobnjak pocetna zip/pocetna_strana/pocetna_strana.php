@@ -178,7 +178,11 @@ button {
 <!-- stranicni meni-->
 <div class="sideNav">	
 	<!-- ovde da se ubace konkretni linkovi ka kursevima ... -->
-	<a href="proces.php?odjava">Odjava</a>
+        <a href="#" class="closeBtn">×</a>
+        <br>
+	<a href="pocetna_strana.php">Pocetna strana</a>
+        <a href="profill.php">Profil</a>
+        <a href="proces.php?odjava">Odjava</a>
 	<!-- ................................................... -->
 </div>
 
@@ -194,7 +198,7 @@ button {
 			<button class="openSideNav"><i class="fa fa-align-justify"></i></button>
 		</div>
 		<!-- link koje ce da baca na pocetnu stranu od trenutno ulogovanog korisnika -->
-		<a class="right_side" href="#home"><i class="fa fa-home"></i></a>
+		<a class="right_side" href="pocetna_strana.php"><i class="fa fa-home"></i></a>
 	</div>	
 </div>
 <?php
@@ -364,6 +368,7 @@ openBtn.addEventListener("click", () => {
 let closeBtn = document.querySelector(".closeBtn");
 closeBtn.addEventListener("click", () => {
    hideNav();
+   i--;
 });
 function showNav() {
    document.querySelector(".sideNav").style.width = "200px";

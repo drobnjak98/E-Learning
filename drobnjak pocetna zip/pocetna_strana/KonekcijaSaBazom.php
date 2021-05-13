@@ -106,5 +106,173 @@
 			}
 		}
 
+		
+		// ispisivanje podataka o profilu profesora ili studenta
+		function UcitajPodatke($id, $tipKorisnika) {
+			$str = "";
+			
+			if($tipKorisnika == "student") {
+				$sql = "SELECT * FROM student WHERE email_student = '".$id."' ";
+				
+				$result = $this->conn->query($sql);
+				$N = $result->num_rows;
+				$i = 0;
+				if ($N > 0) {
+					while($i < $N) {										
+						$row = $result->fetch_assoc();					
+			
+						$str = "
+						<div class=\"row\">
+						<div class=\"col-sm-3\">
+						  <h6 class=\"mb-0\">Ime :</h6>
+						</div>
+						<div class=\"col-sm-9 text-secondary\">
+						  ". $row['ime_student'] . "
+						</div>
+					  </div>
+					  <hr>
+					  <div class=\"row\">
+						<div class=\"col-sm-3\">
+						  <h6 class=\"mb-0\">Prezime: </h6>
+						</div>
+						<div class=\"col-sm-9 text-secondary\">
+						  " . $row['prezime_student'] . "
+						</div>
+					  </div>
+					  <hr>
+					  <div class=\"row\">
+						<div class=\"col-sm-3\">
+						  <h6 class=\"mb-0\">Email : </h6>
+						</div>
+						<div class=\"col-sm-9 text-secondary\">
+						  " . $id . "
+						</div>
+					  </div>
+					  <hr>
+					  <div class=\"row\">
+						<div class=\"col-sm-3\">
+						  <h6 class=\"mb-0\">Godina studija : </h6>
+						</div>
+						<div class=\"col-sm-9 text-secondary\">
+						 " . $row['godina'] . "
+						</div>
+					  </div>
+						";
+						echo $str;						
+						$i++;
+					}	
+				}
+			} else if($tipKorisnika == "profesor"){
+				$sql = "SELECT * FROM nastavnik WHERE email_nastavnik = '".$id."' ";
+				
+				$result = $this->conn->query($sql);
+				$N = $result->num_rows;
+				$i = 0;
+				if ($N > 0) {
+					while($i < $N) {										
+						$row = $result->fetch_assoc();					
+						$str = "
+						<div class=\"row\">
+						<div class=\"col-sm-3\">
+						  <h6 class=\"mb-0\">Ime :</h6>
+						</div>
+						<div class=\"col-sm-9 text-secondary\">
+						  ". $row['ime_nastavnik'] . "
+						</div>
+					  </div>
+					  <hr>
+					  <div class=\"row\">
+						<div class=\"col-sm-3\">
+						  <h6 class=\"mb-0\">Prezime: </h6>
+						</div>
+						<div class=\"col-sm-9 text-secondary\">
+						  " . $row['prezime_nastavnik'] . "
+						</div>
+					  </div>
+					  <hr>
+					  <div class=\"row\">
+						<div class=\"col-sm-3\">
+						  <h6 class=\"mb-0\">Email : </h6>
+						</div>
+						<div class=\"col-sm-9 text-secondary\">
+						  " . $id . "
+						</div>
+					  </div>
+					  <hr>
+					  <div class=\"row\">
+						<div class=\"col-sm-3\">
+						  <h6 class=\"mb-0\">Status : </h6>
+						</div>
+						<div class=\"col-sm-9 text-secondary\">
+						 ...
+						</div>
+					  </div>
+						";	
+						echo $str;						
+						$i++;
+					}	
+				}
+			}
+				
+		}
+
+		
+		// unosenje slike u bazi podataka
+		function UnesiSliku($name, $id, $tip){
+			if ($tip == "student") {
+				$sql = "UPDATE `student` SET `fotografija`='" . $name . "' WHERE `email_student`='" . $id . "'";
+			} else {
+				$sql = "UPDATE `nastavnik` SET `fotografija`='" . $name . "' WHERE `email_nastavnik`='" . $id . "'";
+			}
+				
+			if ($this->conn->query($sql) === TRUE) {
+			  //echo "New record created successfully";
+			} else {
+				echo "<script> alert(\"Desila se greska, probajte opet!\"); </script>";
+			}
+		}
+
+		// prikaz kurseva studenta na profilu
+		function prikazKurseveNaProfilu($email, $tip) {
+			if($tip == "student") {
+				$sql = "SELECT * FROM prati INNER JOIN kurs ON prati.sifra_kursa=kurs.sifra_kursa WHERE prati.email_student='".$email."'";
+			} else{
+				$sql = "SELECT * FROM kurs WHERE email_nastavnik = '".$email."'";
+			}
+			$out = "";
+
+			$result = $this->conn->query($sql);
+			$N = $result->num_rows;
+			if ($N > 0) {				
+				while($row = $result->fetch_assoc()) {
+					//$out .= "<li><a href=\"proces.php?pocetna_kurs=".$row['sifra_kursa']."\">".$row['naziv']."</a></li>";
+					$out .= "
+					<div class=\"row\">
+                    	<div class=\"col-sm-9 \">
+                      		- <a href=\"kurs.php?pocetna_kurs=".$row['sifra_kursa']."\">".$row['naziv']." </a>
+                    	</div>	
+                  	</div>";
+				}
+			}
+			echo $out;
+			
+		}
+
+		//preuzimanje profilne slike
+		function uzmiProfilnuSliku($id, $tip) {
+			$out = "";
+			if($tip == "student") {
+				$sql = "SELECT fotografija FROM student WHERE email_student = '" . $id . "'";
+			} else {
+				$sql = "SELECT fotografija FROM nastavnik WHERE email_nastavnik = '" . $id . "'";
+
+			}
+			$result = $this->conn->query($sql);
+			while($row = $result->fetch_assoc()) {
+				$out = $row['fotografija'];
+			}
+			return $out;
+		}
+
 	}
 ?>
