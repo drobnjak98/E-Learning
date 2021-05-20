@@ -59,6 +59,6 @@
     {
         session_unset();
         session_destroy();
-        header("location: logovanje/logIN.php");
+        header("location: logIN.php");
     }
 ?>

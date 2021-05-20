@@ -180,8 +180,20 @@ button {
 	<!-- ovde da se ubace konkretni linkovi ka kursevima ... -->
         <a href="#" class="closeBtn">×</a>
         <br>
-	<a href="pocetna_strana.php">Pocetna strana</a>
-        <a href="profill.php">Profil</a>
+	<a href="pocetna_strana.php">Pocetna strana</a>        
+<?php 
+        if($_SESSION["tipKorisnika"] != 'admin') {
+?>
+        <a href="profill.php">Profil</a><?php
+        }
+?>
+<?php 
+        if($_SESSION["tipKorisnika"] == 'admin') {
+?>
+        <a href="admin/RadSaBazomStudenata.php">Rad sa bazom studenata</a>
+<?php
+        }
+?>
         <a href="proces.php?odjava">Odjava</a>
 	<!-- ................................................... -->
 </div>

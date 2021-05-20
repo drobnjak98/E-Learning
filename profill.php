@@ -1,13 +1,13 @@
 <?php 
 	session_start();
-	
+	/*
 	if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 		header("location: logovanje/logIN.php");
 		exit;
-	}
+	}*/
 	
 	// da se promeni lokacija za tabela studenti
-	include 'logovanje/KonekcijaSaBazom.php';
+	include 'KonekcijaSaBazom.php';
 	$tabela = new KonekcijaSaBazom();
 		
 	$id = $_SESSION['idKorisnika'];
@@ -193,9 +193,12 @@
       <!-- ovde da se ubace konkretni linkovi ka kursevima ... -->
       <a href="#" class="closeBtn">×</a>
       <br>
+      <!-- ovako ce dabude nadalje ali zbog prezentiranja neka bude obicni link za sada
       <button class="btn btn-light" onclick="window.location.href = 'profill.php';" style="margin-left: 15px"> <img  src="upload/<?php echo $profilna; ?>" width="25px" height="25px"/> <?php echo $_SESSION["podaciKorisnika"]; ?> </button>
+      -->
       <a href="pocetna_strana.php">Pocetna strana</a>
-      <a href="logovanje/logOut.php">Odjava</a>
+      <a href="profill.php">Profil</a>
+      <a href="proces.php?odjava">Odjava</a>
       <!-- ................................................... -->
     </div>
 
@@ -284,6 +287,7 @@
       let closeBtn = document.querySelector(".closeBtn");
       closeBtn.addEventListener("click", () => {
           hideNav();
+          i--;
       });
       function showNav() {
           document.querySelector(".sideNav").style.width = "220px";

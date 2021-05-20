@@ -209,8 +209,11 @@ button {
 <div class="sideNav">	
 	<!-- ovde da se ubace konkretni linkovi ka kursevima ... -->
         <a href="#" class="closeBtn">×</a>
-	<a href="proces.php?odjava">Odjava</a>
-        <a href="profil.php">Profil</a>
+        <br>
+        <a href="pocetna_strana.php">Pocetna strana</a>
+        <a href="profill.php">Profil</a>
+        <a href="proces.php?odjava">Odjava</a>
+        
 	<!-- ................................................... -->
 </div>
 <div class="main-content">
@@ -238,7 +241,7 @@ $sifra = $_GET["pocetna_kurs"];
 $mysqli = new mysqli('localhost', 'root', '', 'portal') or die(mysqli_error($mysqli));
 $mysqli -> set_charset("utf8");
 
-$result= $mysqli->query("SELECT * FROM sadrzaj_kursa WHERE sifra_kursa='$sifra'") or die($mysqli->error);
+$result= $mysqli->query("SELECT * FROM kurs WHERE sifra_kursa='$sifra'") or die($mysqli->error);
 while($row = $result->fetch_assoc())
 {
 ?>
@@ -356,7 +359,7 @@ while($row = $result->fetch_assoc())
     $mysqli = new mysqli('localhost', 'root', '', 'portal') or die(mysqli_error($mysqli));
     $mysqli -> set_charset("utf8");
     
-    $result= $mysqli->query("SELECT * FROM sadrzaj_kursa WHERE sifra_kursa='$sifra'") or die($mysqli->error);
+    $result= $mysqli->query("SELECT * FROM kurs WHERE sifra_kursa='$sifra'") or die($mysqli->error);
     while($row = $result->fetch_assoc())
     {
     ?>
@@ -367,7 +370,9 @@ while($row = $result->fetch_assoc())
         <button class="btn-primary" style="border-radius: 5px;">Sacuvaj</button>
         </div>
         </div>
-        <div contentEditable="true" class="opis"><?php echo($row['opis']); ?></div>
+        <div contentEditable="true" class="opis">Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit ipsa velit unde tempore deleniti? Similique error nihil reiciendis eveniet corrupti rem, reprehenderit commodi iure pariatur, nobis exercitationem, nulla quam enim?
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Omnis sed repellat molestiae laborum quas, minima distinctio dolore perspiciatis doloribus nulla perferendis laboriosam corporis, provident ad quasi nemo ipsa dicta blanditiis.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero totam harum eveniet doloribus? Reprehenderit velit dolor magni repellendus dolorem consequatur rem in placeat dolorum mollitia, architecto itaque laudantium, accusamus ratione!</div>
         <div style=" float:right; ">
         </div>
       
@@ -668,6 +673,7 @@ openBtn.addEventListener("click", () => {
 let closeBtn = document.querySelector(".closeBtn");
 closeBtn.addEventListener("click", () => {
    hideNav();
+   i--;
 });
 function showNav() {
    document.querySelector(".sideNav").style.width = "200px";
