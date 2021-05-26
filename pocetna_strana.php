@@ -190,7 +190,8 @@ button {
 <?php 
         if($_SESSION["tipKorisnika"] == 'admin') {
 ?>
-        <a href="admin/RadSaBazomStudenata.php">Rad sa bazom studenata</a>
+        <a href="admin/student/RadSaBazomStudenata.php">Rad sa bazom studenata</a>
+        <a href="admin/profesor/RadSaBazomProfesora.php">Rad sa bazom profesora</a>
 <?php
         }
 ?>

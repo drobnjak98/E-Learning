@@ -377,10 +377,10 @@
 			
 			//ovde se dodaju linkovi tipa brojevi
 			for ($j = 0; $j < 5; $j++) {
-				$brojZaPrikazati = $tempPage + $j;
+				$brojZaPrikazati = $tempPage + $j - 2;
 				if ($tempPage == $brojZaPrikazati) {
 					$str = $str . "<li class=\"page-item\"><a class=\"page-link\">".$tempPage."</a></li>";
-				} else if ($brojZaPrikazati < $numberOfPages){
+				} else if ($brojZaPrikazati < $numberOfPages && $brojZaPrikazati > 0){
 					$str = $str . "<li class=\"page-item\"><a href=\"RadSaBazomStudenata.php?tempPage=".$brojZaPrikazati."\" class=\"page-link\">".$brojZaPrikazati."</a></li>";
 				}
 			}
@@ -416,7 +416,144 @@
 			}
 		}
 
-		/*..................................................................................... */
+		/*..................................................................................... .........*/
 
+		/*..................rad sa bazom profesora..................................................*/
+
+		
+		//ubacivanje novog studenta u bazi profesora
+		// ovo treba se izmeni
+		function InsertProf($id, $ime, $prezime, $sifra){
+			$N1 = 0;
+			
+			//provera dali postoji student sa datim indeksom
+			if ($id != ""){
+				$sql1 = "SELECT * FROM nastavnik WHERE email_nastavnik LIKE '%".$id."%' ";
+				
+				$result1 = $this->conn->query($sql1);
+				$N1 = $result1->num_rows;				
+			}			
+			
+			if ($N1 > 0) {
+				 echo "<script language=\"javascript\">alert('Student sa unesenim podacima vec postoji.');</script>";
+			} else {
+				$sql = " INSERT INTO `nastavnik`(`email_nastavnik`, `ime_nastavnik`, `prezime_nastavnik`, `sifra_nastavnik`, `fotografija`)
+					VALUES ('".$id."', '".$ime."', '".$prezime."', '".$sifra."', '')";
+				
+				if ($this->conn->query($sql) === TRUE) {
+				  //echo "New record created successfully";
+				} else {
+					echo "<script>
+						alert(\"Error: " . $sql . "<br>" . $this->conn->error."!\");
+					</script>";
+				}
+			}
+		}
+		
+		// prikaz informacija o profesorima u tabeli		
+		//  prikazuje 5 studenta
+		function insertProfsIntoTable($pojamPretrage, $tempPage) {
+			$sql = "SELECT * FROM nastavnik";
+			if ($pojamPretrage != "") {
+				$sql = $sql." WHERE ime_nastavnik LIKE '%".$pojamPretrage."%' OR prezime_nastavnik LIKE '%".$pojamPretrage."%' OR email_nastavnik LIKE '%".$pojamPretrage."%' ";
+			}
+			
+			// koje studente ce prikazati
+			$start = ($tempPage - 1) * 5;
+			$end = $start + 5;
+			
+			$result = $this->conn->query($sql);
+			$this->n = $result->num_rows;
+			$i = 0;
+			if ($this->n > 0) {
+				while($i < $this->n) {
+					if($i == $end) break;
+					
+					$row = $result->fetch_assoc();
+					
+					if($i >= $start) {			
+						echo "<tr>						
+							<td>" . $row['email_nastavnik'] . "</td>
+							<td>" . $row['ime_nastavnik'] . "</td><td> " . $row['prezime_nastavnik'] . "</td>
+						<!--	<td>100</td> -->
+							<td>". $row['sifra_nastavnik'] ." </td>
+					<!--		<td>1</td> -->
+							<td>
+								<a href=\"izmena2.php?id=".$row['email_nastavnik']."&ime=".$row['ime_nastavnik']."&prezime=".$row['prezime_nastavnik'].
+								"&sifra=".$row['sifra_nastavnik']."\" class=\"edit\" ><i class=\"material-icons\" data-toggle=\"tooltip\" title=\"Edit\">&#xE254;</i></a>
+								<a href=\"brisanje2.php?id=".$row['email_nastavnik']."\" class=\"delete\" ><i class=\"material-icons\" data-toggle=\"tooltip\" title=\"Delete\">&#xE872;</i></a>
+							</td>
+						</tr>";
+					}
+					
+					$i++;
+				}	
+			}	
+		}
+
+		// prikaz trenutne stranice u tabeli
+		function doPaginationProf($tempPage) {						
+			if($this->n < 5){
+				$numberOfPages = 1;
+				$shown = $this->n;
+			} else {
+				$numberOfPages = ($this->n / 5) + 1;
+				$shown = 5;
+			}			
+			
+			$str = "<div class=\"hint-text\">Prikazano <b>".$shown."</b> od mogućih <b>".$this->n."</b> ulaza</div>".
+					"<ul class=\"pagination\">";
+						
+			// ovde se dodaje link PRETHODNI
+			if ($tempPage == 1) {			
+				$str = $str ."	<li class=\"page-item disabled\"><a>Prethodni</a></li>";
+			} else {
+				$next = $tempPage - 1;
+				$str = $str ."	<li class=\"page-item disabled\"><a href=\"RadSaBazomProfesora.php?tempPage=".$next."\">Prethodni</a></li>";
+			}
+			
+			//ovde mozda treba se promeni da prikaze i strane pre trenutne
+			for ($j = 0; $j < 5; $j++) {
+				$brojZaPrikazati = $tempPage + $j - 2;
+				if ($tempPage == $brojZaPrikazati) {
+					$str = $str . "<li class=\"page-item\"><a class=\"page-link\">".$tempPage."</a></li>";
+				} else if ($brojZaPrikazati < $numberOfPages && $brojZaPrikazati > 0){
+					$str = $str . "<li class=\"page-item\"><a href=\"RadSaBazomProfesora.php?tempPage=".$brojZaPrikazati."\" class=\"page-link\">".$brojZaPrikazati."</a></li>";
+				}
+			}
+			
+			//ovde se dodaje link tipa SLEDECI
+			if ($tempPage == ($numberOfPages % 10)	){
+				$str = $str .  "<li class=\"page-item\"><a class=\"page-link\">Sledeći</a></li>";
+			} else {
+				$next = $tempPage + 1;
+				$str = $str . "<li class=\"page-item\"><a href=\"RadSaBazomProfesora.php?tempPage=".$next."\" class=\"page-link\">Sledeći</a></li>";
+			}		
+			$str = $str . "  </ul>";
+			echo $str;
+		}
+
+		//brisanje studenta iz baze studenata
+		function DeleteProf($id) {
+			$sql = "DELETE FROM `nastavnik` WHERE `email_nastavnik`='".$id."'";
+			if ($this->conn->query($sql) === TRUE) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
+		//promena informacije o studentu
+		function UpdateProf($ID, $ime, $prezime, $sifra) {
+			$sql = "UPDATE `nastavnik` SET `ime_nastavnik`='".$ime."',`prezime_nastavnik`='".$prezime."',`sifra_nastavnik`='".$sifra."' WHERE `email_nastavnik`='".$ID."'";
+			if ($this->conn->query($sql) === TRUE) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
+
+		/*............................................................................................ */
 	}
 ?>

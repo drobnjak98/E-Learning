@@ -2,14 +2,14 @@
 <html>
     <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 	<style>
 		body{
 			//background-image: url('http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg');
@@ -69,14 +69,14 @@
 			$id = $_GET['id'];
 		}
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
-			include '../KonekcijaSaBazom.php';
+			include '../../KonekcijaSaBazom.php';
 	        $tabela = new KonekcijaSaBazom();
             $ID = $_POST['idToDelete'];
 			$test = false;
 			
-            if($tabela->Delete($ID)) {
+            if($tabela->DeleteProf($ID)) {
                 echo "<script language=\"javascript\">alert('Slika je uspeno obrisana.');</script>";
-				header('Location: RadSaBazomStudenata.php');
+				header('Location: RadSaBazomProfesora.php');
 			}
             else  
                 echo "<script language=\"javascript\">alert('Doslo je do greske u brisanju.');</script>";
@@ -90,7 +90,7 @@
 				<div class="modal-content">
 					<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 						<div class="modal-header">						
-							<h4 class="modal-title">Izbriši studenta iz baze</h4>
+							<h4 class="modal-title">Izbriši profesora iz baze</h4>
 							<button type="button" class="close" onclick="povratak()">&times;</button>
 						</div>
 						<div class="modal-body">					
@@ -102,7 +102,7 @@
 							<input type="text" class="form-control" name="idToDelete" id="elementToDelete" value="<?php echo $id;?>" readonly>
 						</div>						
 						<div class="modal-footer">
-							<a href="RadSaBazomStudenata.php" id="link">Odustani</a>
+							<a href="RadSaBazomProfesora.php" id="link">Odustani</a>
 							<!--<input type="button" class="btn btn-danger" onclick="obrisi()" value="Obriši"> -->
 							<input type="submit" class="btn btn-danger" value="Delete">
 						</div>
@@ -112,7 +112,7 @@
 		</div>
 				<script>
 			function povratak() {
-				window.location="RadSaBazomStudenata.php";
+				window.location="RadSaBazomProfesora.php";
 			}	
 		</script>
     </body>

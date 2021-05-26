@@ -364,7 +364,7 @@ table.table .avatar {
 
 
 <?php 
-	include '../KonekcijaSaBazom.php';
+	include '../../KonekcijaSaBazom.php';
 	$tabela = new KonekcijaSaBazom();
 
 	$tempPage = 1;
@@ -384,15 +384,13 @@ table.table .avatar {
 			$studentInput = "";
 		}
 		
-		if(isset($_POST['ime']) && isset($_POST['prezime']) && isset($_POST['email']) && isset($_POST['studije'])) {
+		if(isset($_POST['ime']) && isset($_POST['prezime']) && isset($_POST['email'])) {
 			$ime = $_POST['ime'];
 			$prezime = $_POST['prezime'];
 			$email = $_POST['email'];
-			$studije = $_POST['studije'];
 			$sifra = $_POST['sifra'];
-			$indeks = $_POST['indeks'];
             // ovo treba se izmeni
-			$tabela->Insert($email, $ime, $prezime, $indeks, $studije, $sifra);
+			$tabela->InsertProf($email, $ime, $prezime, $sifra);
 		}		
 	}
 ?>
@@ -402,11 +400,11 @@ table.table .avatar {
 <div class="sideNav">	
 	<!-- ovde da se ubace konkretni linkovi ka kursevima ... -->
 	<a href="#" class="closeBtn">×</a>
-	<a href="RadSaBazomStudenata.php">Rad sa bazom studenata</a>
-	<a href="#">Rad sa bazom profesora</a>
+	<a href="../student/RadSaBazomStudenata.php">Rad sa bazom studenata</a>
+	<a href="">Rad sa bazom profesora</a>
 	<a href="#">...</a>
-    <a href="../pocetna_strana.php">Pocetna strana</a>
-	<a href="../proces.php?odjava">Odjava</a>
+    <a href="../../pocetna_strana.php">Pocetna strana</a>
+	<a href="../../proces.php?odjava">Odjava</a>
 	<!-- ................................................... -->
 </div>
 <div class="main-content">
@@ -417,7 +415,7 @@ table.table .avatar {
     </div>
 	
 	<div class="header">
-		<p id="header_p"><img src="../logo_moodle2.png" /></p>
+		<p id="header_p"><img src="../../logo_moodle2.png" /></p>
 	</div>
 
 	<div class="navbar">
@@ -426,7 +424,7 @@ table.table .avatar {
 			<button class="openSideNav"><i class="fa fa-align-justify"></i></button>
 		</div>
 		<!-- link koje ce da baca na pocetnu stranu od trenutno ulogovanog korisnika -->
-		<a class="right_side" href="../pocetna_strana.php"><i class="fa fa-home"></i></a>
+		<a class="right_side" href="../../pocetna_strana.php"><i class="fa fa-home"></i></a>
 	</div>
 	
 	<div class="userContent">
@@ -436,17 +434,17 @@ table.table .avatar {
 					<div class="table-title">
 						<div class="row">
 							<div class="col-sm-6">
-								<h2>Rad sa <b>Studentima</b></h2>
+								<h2>Rad sa <b>Profesorima</b></h2>
 							</div>							
 							<div class="col-sm-6">
-								<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Dodaj Novog Studenta</span></a>
+								<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Dodaj Novog Profesora</span></a>
 								<!-- <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Obriši</span></a>	-->					
 							</div>
 						</div>
 					</div>
 					<div>
 						<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-							<label for="fname">Pretraži studenta : </label>
+							<label for="fname">Pretraži profesora : </label>
 							<input type="text" id="fname" name="studentInput" value="<?php echo $studentInput; ?>">	
 							<button type="submit" ><i class="fa fa-search" aria-hidden="true"></i> </button>						
 						</form>
@@ -458,22 +456,22 @@ table.table .avatar {
 								<th>Email</th>
 								<th>Ime</th>
 								<th>Prezime</th>								
-								<th>Indeks</th>
+							<!--	<th>Indeks</th> -->
 								<th>Sifra</th>
-								<th>Godina Studija</th>
+							<!--	<th>Godina Studija</th> -->
 								<th>Akcije</th>
 							</tr>
 						</thead>
 						<tbody>
 										
 							 <?php 
-								$tabela->insertStudentsIntoTable($studentInput, $tempPage);															
+								$tabela->insertProfsIntoTable($studentInput, $tempPage);															
 								
 							 ?>
 						</tbody>
 					</table>
 					<div class="clearfix"> 
-						<?php echo $tabela->doPagination($tempPage); ?>
+						<?php echo $tabela->doPaginationProf($tempPage); ?>
 					</div>
 				</div>
 			</div>        
@@ -484,7 +482,7 @@ table.table .avatar {
 				<div class="modal-content">
 					<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" >
 						<div class="modal-header">						
-							<h4 class="modal-title">Dodaj studenta</h4>
+							<h4 class="modal-title">Dodaj profesora</h4>
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						</div>
 						<div class="modal-body">	
@@ -499,14 +497,6 @@ table.table .avatar {
 							<div class="form-group">
 								<label>Prezime</label>
 								<input type="text" class="form-control" name="prezime" required>
-							</div>
-							<div class="form-group">
-								<label>Indeks</label>
-								<input type="text" class="form-control" name="indeks" required>
-							</div>
-							<div class="form-group">
-								<label>Godina Studija</label>
-								<input type="text" class="form-control" name="studije" required>
 							</div>
 							<div class="form-group">
 								<label>Sifra</label>

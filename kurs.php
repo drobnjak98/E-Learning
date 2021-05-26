@@ -211,7 +211,12 @@ button {
         <a href="#" class="closeBtn">×</a>
         <br>
         <a href="pocetna_strana.php">Pocetna strana</a>
-        <a href="profill.php">Profil</a>
+        <?php 
+        if($_SESSION["tipKorisnika"] != 'admin') {
+?>
+        <a href="profill.php">Profil</a><?php
+        }
+?>
         <a href="proces.php?odjava">Odjava</a>
         
 	<!-- ................................................... -->

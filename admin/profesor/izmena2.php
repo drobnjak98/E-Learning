@@ -79,31 +79,21 @@
 		if(isset($_GET['prezime'])) {
 			$prezime = $_GET['prezime'];
 		}
-		if(isset($_GET['indeks'])) {
-			$indeks = $_GET['indeks'];
-		}
-		if(isset($_GET['studije'])) {
-			$studije = $_GET['studije'];
-		}
 		if(isset($_GET['sifra'])) {
 			$sifra = $_GET['sifra'];
 		}
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
-			include '../KonekcijaSaBazom.php';
+			include '../../KonekcijaSaBazom.php';
 	        $tabela = new KonekcijaSaBazom();
 			
             $Email = $_POST['emailZaIsmeniti'];
 			$Ime = $_POST['imeZaIsmeniti'];
 			$Prezime = $_POST['prezimeZaIsmeniti'];
-			$Indeks = $_POST['indeksZaIsmeniti'];
-			$Studije = $_POST['studijeZaIsmeniti'];
 			$Sifra = $_POST['sifraZaIsmeniti'];
 			
 			$email = $Email;
 			$ime = $Ime;
 			$prezime = $Prezime;
-			$indeks = $Indeks;
-			$studije = $Studije;
 			$sifra = $Sifra;
 			
 			// ovo se moze promeni po zelji
@@ -116,9 +106,9 @@
 			}  else if (!preg_match("/^[a-zA-Z-' ]*$/",$prezime)) {
 				$prezimeErr = "* Samo slova i prazno mesto su dozvoljeni";
 			} else {
-				if($tabela->Update($Email, $Ime, $Prezime, $Indeks, $Studije ,$Sifra, $Indeks)) {
+				if($tabela->UpdateProf($Email, $Ime, $Prezime, $Sifra)) {
 					echo "<script language=\"javascript\">alert('Izmene su uspesno ucitane.');</script>";
-					header('Location: RadSaBazomStudenata.php');
+					header('Location: RadSaBazomProfesora.php');
 				}
 				else  
 					echo "<script language=\"javascript\">alert('Doslo je do greske pri ucitavanje izmena.');</script>";
@@ -135,7 +125,7 @@
 				<div class="modal-content">
 					<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 						<div class="modal-header">						
-							<h4 class="modal-title">Izmena podataka o studentu</h4>
+							<h4 class="modal-title">Izmena podataka o profesoru</h4>
 							<button type="button" class="close" onclick="povratak()">&times;</button>
 						</div>
 						<div class="modal-body">
@@ -155,21 +145,13 @@
 								<input type="text" class="form-control" value="<?php echo $prezime; ?>" name="prezimeZaIsmeniti" required>
 							</div>
 							<div class="form-group">
-								<label>Indeks</label>
-								<input type="text" class="form-control" value="<?php echo $indeks; ?>" name="indeksZaIsmeniti" required>
-							</div>
-							<div class="form-group">
-								<label>Godina studija</label>
-								<input type="number" class="form-control" value="<?php echo $studije; ?>" name="studijeZaIsmeniti"  min="1" max="5" required>
-							</div>	
-							<div class="form-group">
 								<label>Sifra</label>
 								<span id="greska"><?php echo $sifraErr;?></span>
 								<input type="text" class="form-control" value="<?php echo $sifra; ?>" name="sifraZaIsmeniti" required>
 							</div>	
 						</div>
 						<div class="modal-footer">
-							<a href="RadSaBazomStudenata.php" id="link">Odustani</a>
+							<a href="RadSaBazomProfesora.php" id="link">Odustani</a>
 							<input type="submit" class="btn btn-info" value="Zacuvaj">
 						</div>
 					</form>
@@ -178,7 +160,7 @@
 		</div>
 		<script>
 			function povratak() {
-				window.location="RadSaBazomStudenata.php";
+				window.location="RadSaBazomProfesora.php";
 			}	
 		</script>
 </body>
