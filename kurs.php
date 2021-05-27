@@ -209,16 +209,8 @@ button {
 <div class="sideNav">	
 	<!-- ovde da se ubace konkretni linkovi ka kursevima ... -->
         <a href="#" class="closeBtn">×</a>
-        <br>
-        <a href="pocetna_strana.php">Pocetna strana</a>
-        <?php 
-        if($_SESSION["tipKorisnika"] != 'admin') {
-?>
-        <a href="profill.php">Profil</a><?php
-        }
-?>
-        <a href="proces.php?odjava">Odjava</a>
-        
+	<a href="proces.php?odjava">Odjava</a>
+        <a href="profil.php">Profil</a>
 	<!-- ................................................... -->
 </div>
 <div class="main-content">
@@ -236,13 +228,34 @@ button {
 		<a class="right_side" href="pocetna_strana.php"><i class="fa fa-home"></i></a>
 	</div>	
 </div>
+<!-- dodato za test-->
+<?php
+        $sifra=$_SESSION['kurs'];
+        $mysqli = new mysqli('localhost', 'root', '', 'portal') or die(mysqli_error($mysqli));
+        $mysqli -> set_charset("utf8");
+        $result= $mysqli->query("SELECT * FROM test WHERE sifra_kursa='$sifra' ORDER BY broj_testa DESC LIMIT 1") or die($mysqli->error);
+        $row= $result->fetch_assoc();
+        if($row!=null)
+        {
+            $_SESSION['test']=$row['broj_testa'];
+            $status=$row['status'];
+            $poeni=$row['poeni_svi'];
+        }
+        else
+        {
+            $_SESSION['test']=1;
+            $status="onemogucen";
+            $poeni=0.0;
+        }    
+?>
+<!-- kraj dodatog za test-->
 <?php
     if($_SESSION["tipKorisnika"] == "student")  // pocetak student sesije
     {
 ?>
 <div class='wrapper'>
 <?php
-$sifra = $_GET["pocetna_kurs"]; 
+$sifra = $_SESSION['kurs']; 
 $mysqli = new mysqli('localhost', 'root', '', 'portal') or die(mysqli_error($mysqli));
 $mysqli -> set_charset("utf8");
 
@@ -255,6 +268,30 @@ while($row = $result->fetch_assoc())
     <button class="btn-danger" style="border-radius: 5px">Sacuvaj</button>
     </div>
     <div contentEditable="true" class="opis"><?php echo($row['opis']); ?></div>
+    <!-- dodato za test-->
+    <div>
+    <?php
+            $email=$_SESSION['idKorisnika'];
+            $test=$_SESSION['test'];
+            $result= $mysqli->query("SELECT * FROM radio WHERE sifra_kursa='$sifra' AND broj_testa=$test AND email_student='$email'") or die($mysqli->error);
+            $row= $result->fetch_assoc();
+            $bodovi=$row['bodovi'];
+            if($status=="omogucen" && ($bodovi==-1 || $bodovi==null))
+            {
+    ?>
+                <form action="proces.php" method="POST">
+                    <button class="btn-primary" style="border-radius: 5px;" type="submit" name="pokreni_test"> Pokreni test </button>
+                </form>
+    <?php
+            }
+    ?>       
+    </div> 
+    <br>
+    <div>
+        <a href="rezultati_test.php"><button class="btn-primary" style="border-radius: 5px;">Rezultati</button></a>
+    </div>   
+    <br>    
+    <!-- kraj dodatog za test-->
     <div class="sekcija" style="border-top: 1px solid gray;">
         <h4>Nedelja 1</h4>
         <ul class="lista" >
@@ -360,7 +397,7 @@ while($row = $result->fetch_assoc())
     ?>
     <div class='wrapper'>
     <?php
-    $sifra = $_GET["pocetna_kurs"]; 
+    $sifra = $_SESSION['kurs']; 
     $mysqli = new mysqli('localhost', 'root', '', 'portal') or die(mysqli_error($mysqli));
     $mysqli -> set_charset("utf8");
     
@@ -375,11 +412,49 @@ while($row = $result->fetch_assoc())
         <button class="btn-primary" style="border-radius: 5px;">Sacuvaj</button>
         </div>
         </div>
-        <div contentEditable="true" class="opis">Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit ipsa velit unde tempore deleniti? Similique error nihil reiciendis eveniet corrupti rem, reprehenderit commodi iure pariatur, nobis exercitationem, nulla quam enim?
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Omnis sed repellat molestiae laborum quas, minima distinctio dolore perspiciatis doloribus nulla perferendis laboriosam corporis, provident ad quasi nemo ipsa dicta blanditiis.
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero totam harum eveniet doloribus? Reprehenderit velit dolor magni repellendus dolorem consequatur rem in placeat dolorum mollitia, architecto itaque laudantium, accusamus ratione!</div>
+        <div contentEditable="true" class="opis"><?php echo($row['opis']); ?></div>
         <div style=" float:right; ">
         </div>
+        <!-- dodato za test-->
+        <div>
+        <?php
+            if($status=="onemogucen" || ($poeni==0.0 && $status=="kreiran"))
+            {
+        ?>
+                <form action="proces.php" method="POST">
+                    <input type="hidden" name="status" value="<?php echo $status;?>">
+                    <button class="btn-primary" style="border-radius: 5px;" type="submit" name="kreiran_test"> Napravi test </button>
+                </form>
+        <?php
+            }
+        ?>
+        <?php
+            if($poeni>0.0 && $status=="kreiran")
+            {
+        ?>
+                <form action="proces.php" method="POST">
+                    <button class="btn-primary" style="border-radius: 5px;" type="submit" name="omoguci_test"> Omoguci test </button>
+                </form>
+        <?php
+            }
+        ?>
+        <?php
+            if($status=="omogucen")
+            {
+        ?>
+                <form action="proces.php" method="POST">
+                    <button class="btn-primary" style="border-radius: 5px;" type="submit" name="onemoguci_test"> Onemoguci test </button>
+                </form>
+        <?php
+            }
+        ?>  
+        </div>  
+        <br>
+        <div>
+            <a href="rezultati_test.php"><button class="btn-primary" style="border-radius: 5px;">Rezultati</button></a>
+        </div>   
+        <br>       
+        <!-- kraj dodatog za test-->
       
         <div class="sekcija" style="border-top: 1px solid gray;">
             <h4>Nedelja 1</h4>
@@ -515,7 +590,7 @@ while($row = $result->fetch_assoc())
     ?>
     <div class='wrapper'>
     <?php
-    $sifra = $_GET["pocetna_kurs"]; 
+    $sifra = $_SESSION['kurs']; 
     $mysqli = new mysqli('localhost', 'root', '', 'portal') or die(mysqli_error($mysqli));
     $mysqli -> set_charset("utf8");
     
@@ -533,7 +608,12 @@ while($row = $result->fetch_assoc())
         <div class="opis">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur mollitia reiciendis quia sunt tempore vel totam magni, facere voluptatem nostrum, eum nobis corporis, harum quo delectus aliquid fugiat dolorum possimus. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perspiciatis quo porro sequi repudiandae ab, sit, nemo architecto sunt fuga debitis laborum unde! Iusto nam ipsa enim fugiat quisquam? Quod, ea! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum aliquid assumenda fugit beatae ratione? Et itaque, iusto quia libero rerum veniam officiis dignissimos nisi, in expedita autem minus consequuntur id!</div>
         <div style=" float:right; ">
         </div>
-      
+        <!-- dodato za test -->
+        <div>
+            <a href="rezultati_test.php"><button class="btn-primary" style="border-radius: 5px;">Rezultati</button></a>
+        </div>
+        <br>  
+        <!-- kraj dodatog za test -->
         <div class="sekcija" style="border-top: 1px solid gray;">
             <h4>Nedelja 1</h4>
         <div>
@@ -678,7 +758,6 @@ openBtn.addEventListener("click", () => {
 let closeBtn = document.querySelector(".closeBtn");
 closeBtn.addEventListener("click", () => {
    hideNav();
-   i--;
 });
 function showNav() {
    document.querySelector(".sideNav").style.width = "200px";
