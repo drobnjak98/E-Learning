@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <?php
     session_start();
+    //BOOM
+    if (isset($_GET['pocetna_kurs'])) {
+    $_SESSION['kurs'] =  $_GET['pocetna_kurs'];
+    } /*else {
+        header("Location:pocetna_strana.php");
+    }*/
 ?>
 <html lang="sr-latin">
 <head>
@@ -19,11 +25,11 @@
 <title>E-Ucenje</title>
 <style>
 body {
-	margin: 0;
+    margin: 0;
 }
 
 .header {
-	text-align: center;
+    text-align: center;
 }
 
 .sideNav {
@@ -114,7 +120,7 @@ button {
 }
 
 .right_side {
-	float: right;
+    float: right;
 }
 
 #tekst{
@@ -206,27 +212,27 @@ button {
 </head>
 <body>
 <!-- stranicni meni-->
-<div class="sideNav">	
-	<!-- ovde da se ubace konkretni linkovi ka kursevima ... -->
+<div class="sideNav">   
+    <!-- ovde da se ubace konkretni linkovi ka kursevima ... -->
         <a href="#" class="closeBtn">×</a>
-	<a href="proces.php?odjava">Odjava</a>
+    <a href="proces.php?odjava">Odjava</a>
         <a href="profil.php">Profil</a>
-	<!-- ................................................... -->
+    <!-- ................................................... -->
 </div>
 <div class="main-content">
     
-	<div class="header">
-		<p id="header_p"><img src="logo_moodle2.png" /></p>
-	</div>
+    <div class="header">
+        <p id="header_p"><img src="logo_moodle2.png" /></p>
+    </div>
 
-	<div class="navbar">
-		<div class="dropdown">
-		<!-- sa klikom da dugme se otvara stranicni meni-->
-			<button class="openSideNav"><i class="fa fa-align-justify"></i></button>
-		</div>
-		<!-- link koje ce da baca na pocetnu stranu od trenutno ulogovanog korisnika -->
-		<a class="right_side" href="pocetna_strana.php"><i class="fa fa-home"></i></a>
-	</div>	
+    <div class="navbar">
+        <div class="dropdown">
+        <!-- sa klikom da dugme se otvara stranicni meni-->
+            <button class="openSideNav"><i class="fa fa-align-justify"></i></button>
+        </div>
+        <!-- link koje ce da baca na pocetnu stranu od trenutno ulogovanog korisnika -->
+        <a class="right_side" href="pocetna_strana.php"><i class="fa fa-home"></i></a>
+    </div>  
 </div>
 <!-- dodato za test-->
 <?php
@@ -292,13 +298,14 @@ while($row = $result->fetch_assoc())
     </div>   
     <br>    
     <!-- kraj dodatog za test-->
+
     <div class="sekcija" style="border-top: 1px solid gray;">
         <h4>Nedelja 1</h4>
         <ul class="lista" >
             <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
             <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
             <li class="fa"><a>&#xf15c; </a>Fajl_3.doc</li>
-            <li class="fa"><a>&#xf15c; </a>Fajl_4.doc</li>
+            <!--<li class="fa"><a>&#xf15c; </a>Fajl_4.doc</li>-->
         <ul>
     </div>
 
@@ -405,6 +412,7 @@ while($row = $result->fetch_assoc())
     while($row = $result->fetch_assoc())
     {
     ?>
+
     <div style="display: flex; justify-content: space-between">
         <h3><?php echo($row['naziv']); ?></h3>
         <div>
@@ -455,131 +463,55 @@ while($row = $result->fetch_assoc())
         </div>   
         <br>       
         <!-- kraj dodatog za test-->
-      
-        <div class="sekcija" style="border-top: 1px solid gray;">
-            <h4>Nedelja 1</h4>
-        <div>
-        <button class="btn-primary" style="border-radius: 5px">Dodaj fajl</button>
-        </div>
-            <ul class="lista" >
-            <div style="justify-content: space-between;">
-                <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf </li>
-                <button style="margin-left:1050px; border-radius:5px;" class='btn-danger'>obrisi</button>
-            </div>
-            <div style="justify-content: space-between;">
-                <li class="fa"><a>&#xf15c; </a>Fajl_2.pdf </li>
-                <button style="margin-left:1050px; border-radius:5px;" class='btn-danger'>obrisi</button>
-            </div>
-            <div style="justify-content: space-between;">
-                <li class="fa"><a>&#xf15c; </a>Fajl_3.pdf </li>
-                <button style="margin-left:1050px; border-radius:5px;" class='btn-danger'>obrisi</button>
-            </div>
-            <div style="justify-content: space-between;">
-                <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf </li>
-                <button style="margin-left:1050px; border-radius:5px;" class='btn-danger'>obrisi</button>
-            </div>
+
+
+
+<form method='post'action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype='multipart/form-data'>
+<?php
+    //postavljanje fajlova po nedeljama
+    for ($i=0; $i < 15; $i++) {
+
+        if ($i == 0) {
+            echo '<div class="sekcija" style="border-top: 1px solid gray;">';
+        }
+        else
+            echo '<div class="sekcija">';
+        echo '<h4>Nedelja '.($i+1).'</h4>
+            <ul class="lista" >';
+
+        $result = $mysqli->query("SELECT * FROM fajl WHERE sifra_kursa='$sifra' AND id_sekcije='$i' ORDER BY redni_broj ASC") or die($mysqli->error);
+        while($row = $result->fetch_assoc()){
+            echo '<li class="fa"><a href="'.$row['lokacija'].'">'.$row['naziv'].'</a></li>';
+        }
+            echo '<li class="fa"><input type="file" name="files'.$i.'[]" id="files'.$i.'" multiple></li>
             <ul>
-        </div>
-    
-        <div class="sekcija">
-            <h4>Nedelja 2</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul class="lista" >
-                <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
-                <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
-            <ul>
-        </div>
-    
-        <div class="sekcija">
-            <h4>Nedelja 3</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul class="lista" >
-                <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
-                <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
-            <ul>
-        </div>
-        
-        <div class="sekcija">
-            <h4>Nedelja 4</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul class="lista" >
-                <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
-                <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
-            <ul>
-        </div>
-        <div class="sekcija">
-            <h4>Nedelja 5</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul class="lista" >
-                <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
-                <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
-            <ul>
-        </div>
-    
-        <div class="sekcija">
-            <h4>Nedelja 6</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul class="lista" >
-                <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
-                <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
-            <ul>
-        </div>
-        
-        <div class="sekcija">
-            <h4>Nedelja 7</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul class="lista" >
-                <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
-                <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
-            <ul>
-        </div>
-        <div class="sekcija">
-            <h4>Nedelja 8</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-        </div>
-        
-        <div class="sekcija">
-            <h4>Nedelja 9</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-        </div>
-        <div class="sekcija">
-            <h4>Nedelja 10</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-        </div>
-    
-        <div class="sekcija">
-            <h4>Nedelja 11</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul>
-            <ul>
-        </div>
-        
-        <div class="sekcija">
-            <h4>Nedelja 12</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul>
-            <ul>
-        </div>
-        <div class="sekcija">
-            <h4>Nedelja 13</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul>
-            <ul>
-        </div>
-        
-        <div class="sekcija">
-            <h4>Nedelja 14</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul>
-            <ul>
-        </div>
-        <div class="sekcija">
-            <h4>Nedelja 15</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul>
-            <ul>
-        </div>
-    </div>
+        </div>';
+    }
+?>
+    <input type='submit' name='submit' value='Sacuvaj!!!'>
+</form>
+<?php
+    if(isset($_POST['submit'])){
+        for ($i=0; $i < 15; $i++) {
+            $count_files = count($_FILES['files'.$i]['name']);
+            for ($j=0; $j < $count_files; $j++) {
+                $file_name = $_FILES['files'.$i]['name'][$j];
+                $file_tmp_name=$_FILES['files'.$i]['tmp_name'][$j];
+                $file_error=$_FILES['files'.$i]['error'][$j];
+                $file_ext=explode('.',$file_name);
+                $file_act_ext=strtolower(end($file_ext));
+                if($file_error===0){
+                    $file_random_name=uniqid('',true).".".$file_act_ext;
+                    $file_dest="fajlovi/$file_random_name";
+                    move_uploaded_file($file_tmp_name,$file_dest);
+
+                    $files_update = "INSERT INTO fajl (id, naziv, lokacija, tip_fajla, sifra_kursa, id_sekcije, redni_broj, vidljivost) VALUES (0, '$file_name', '$file_dest', '$file_act_ext', '$sifra', '$i', '$j', 0);";
+                    mysqli_query($mysqli,$files_update);
+                }
+            }
+        }        
+    }
+?>
     <?php        
     } 
  } // kraj student sesije 
@@ -747,13 +679,13 @@ var i = 0;
 
 let openBtn = document.querySelector(".openSideNav");
 openBtn.addEventListener("click", () => {
-	if (i == 0) {
-		showNav();
-		i++;
-	} else {
-		hideNav();
-		i--;
-	}
+    if (i == 0) {
+        showNav();
+        i++;
+    } else {
+        hideNav();
+        i--;
+    }
 });
 let closeBtn = document.querySelector(".closeBtn");
 closeBtn.addEventListener("click", () => {
