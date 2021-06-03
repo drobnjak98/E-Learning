@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <?php
     session_start();
-    //BOOM
     if (isset($_GET['pocetna_kurs'])) {
     $_SESSION['kurs'] =  $_GET['pocetna_kurs'];
-    } /*else {
-        header("Location:pocetna_strana.php");
-    }*/
+    }
 ?>
 <html lang="sr-latin">
 <head>
@@ -417,7 +414,7 @@ while($row = $result->fetch_assoc())
         <h3><?php echo($row['naziv']); ?></h3>
         <div>
         <button class="btn-danger" style="border-radius: 5px">Izmeni</button>
-        <button class="btn-primary" style="border-radius: 5px;">Sacuvaj</button>
+        <input class="btn-primary" style="border-radius: 5px;" form="files-upload" type='submit' name='submit' value='Sacuvaj' onclick="return confirm('Da li ste sigurni da zelite da sacuvate promene?')">
         </div>
         </div>
         <div contentEditable="true" class="opis"><?php echo($row['opis']); ?></div>
@@ -465,33 +462,54 @@ while($row = $result->fetch_assoc())
         <!-- kraj dodatog za test-->
 
 
-
-<form method='post'action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype='multipart/form-data'>
-<?php
-    //postavljanje fajlova po nedeljama
-    for ($i=0; $i < 15; $i++) {
-
-        if ($i == 0) {
-            echo '<div class="sekcija" style="border-top: 1px solid gray;">';
-        }
-        else
-            echo '<div class="sekcija">';
-        echo '<h4>Nedelja '.($i+1).'</h4>
-            <ul class="lista" >';
-
-        $result = $mysqli->query("SELECT * FROM fajl WHERE sifra_kursa='$sifra' AND id_sekcije='$i' ORDER BY redni_broj ASC") or die($mysqli->error);
-        while($row = $result->fetch_assoc()){
-            echo '<li class="fa"><a href="'.$row['lokacija'].'">'.$row['naziv'].'</a></li>';
-        }
-            echo '<li class="fa"><input type="file" name="files'.$i.'[]" id="files'.$i.'" multiple></li>
-            <ul>
-        </div>';
-    }
-?>
-    <input type='submit' name='submit' value='Sacuvaj!!!'>
-</form>
 <?php
     if(isset($_POST['submit'])){
+        //uciniti fajl vidljivim
+        if(isset($_POST['checkboxShow'])){
+            $show_checkboxes = $_POST['checkboxShow'];
+            if(!empty($show_checkboxes))
+            {
+                $number_of_checkboxes = count($show_checkboxes);
+                for($i=0; $i < $number_of_checkboxes; $i++)
+                {
+                    $current_checkbox = $show_checkboxes[$i];
+                    $update_checkbox="UPDATE fajl SET vidljivost='1' WHERE id='$current_checkbox'";
+                    mysqli_query($mysqli,$update_checkbox);
+                }
+            }
+        }
+
+        //uciniti fajl nevidljivim
+        if(isset($_POST['checkboxHide'])){
+            $hide_checkboxes = $_POST['checkboxHide'];
+            if(!empty($hide_checkboxes))
+            {
+                $number_of_checkboxes = count($hide_checkboxes);
+                for($i=0; $i < $number_of_checkboxes; $i++)
+                {
+                    $current_checkbox = $hide_checkboxes[$i];
+                    $update_checkbox="UPDATE fajl SET vidljivost='0' WHERE id='$current_checkbox'";
+                    mysqli_query($mysqli,$update_checkbox);
+                }
+            }
+        }
+
+        //brisanje fajlova
+        if(isset($_POST['checkboxDelete'])){
+            $delete_checkboxes = $_POST['checkboxDelete'];
+            if(!empty($delete_checkboxes))
+            {
+                $number_of_checkboxes = count($delete_checkboxes);
+                for($i=0; $i < $number_of_checkboxes; $i++)
+                {
+                    $current_checkbox = $delete_checkboxes[$i];
+                    $delete_checkbox="DELETE FROM fajl WHERE id='$current_checkbox'";
+                    mysqli_query($mysqli,$delete_checkbox);
+                }
+            }
+        }
+
+        //upload fajlova
         for ($i=0; $i < 15; $i++) {
             $count_files = count($_FILES['files'.$i]['name']);
             for ($j=0; $j < $count_files; $j++) {
@@ -505,13 +523,76 @@ while($row = $result->fetch_assoc())
                     $file_dest="fajlovi/$file_random_name";
                     move_uploaded_file($file_tmp_name,$file_dest);
 
-                    $files_update = "INSERT INTO fajl (id, naziv, lokacija, tip_fajla, sifra_kursa, id_sekcije, redni_broj, vidljivost) VALUES (0, '$file_name', '$file_dest', '$file_act_ext', '$sifra', '$i', '$j', 0);";
-                    mysqli_query($mysqli,$files_update);
+                    $files_insert = "INSERT INTO fajl (id, naziv, lokacija, tip_fajla, sifra_kursa, id_sekcije, redni_broj, vidljivost) VALUES (0, '$file_name', '$file_dest', '$file_act_ext', '$sifra', '$i', '$j', 0);";
+                    mysqli_query($mysqli,$files_insert);
                 }
             }
         }        
     }
 ?>
+<form id="files-upload" method='post'action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype='multipart/form-data'>
+<?php
+    //postavljanje fajlova i opcija po nedeljama
+    for ($i=0; $i < 15; $i++) {
+
+        if ($i == 0) {
+            echo '<div class="sekcija" style="border-top: 1px solid gray;">';
+        }
+        else
+            echo '<div class="sekcija">';
+        echo '<h4>Nedelja '.($i+1).'</h4>
+                <ul class="lista" >';
+
+        $result = $mysqli->query("SELECT * FROM fajl WHERE sifra_kursa='$sifra' AND id_sekcije='$i' ORDER BY redni_broj ASC") or die($mysqli->error);
+        while($row = $result->fetch_assoc()){
+            echo   '<li class="fa">
+                    <div id="file-div'.$row['id'].'" style="display: inline-block; padding: 5px;">
+                        <input style="display: none;" id="checkboxShowId'.$row['id'].'" type="checkbox" name="checkboxShow[]" value="'.$row['id'].'" ';
+                        echo ($row['vidljivost']==1) ? 'checked' : '';
+                        echo '/>
+
+                        <input style="display: none;" id="checkboxHideId'.$row['id'].'" type="checkbox" name="checkboxHide[]" value="'.$row['id'].'" ';
+                        echo ($row['vidljivost']==0) ? 'checked' : '';
+                        echo '/>
+
+                        <input style="display: none;" id="checkboxDeleteId'.$row['id'].'" type="checkbox" name="checkboxDelete[]" value="'.$row['id'].'" />
+
+                        <a id="file-link'.$row['id'].'" style="opacity: ';
+                        echo ($row['vidljivost']==0) ? 0.33 : 1;
+                        echo '" href="'.$row['lokacija'].'">
+                            <span class="fas fa-file"></span> '.$row['naziv'].'
+                        </a>
+                        <button id="btn-file-show'.$row['id'].'" type="button" class="btn-primary" style="';
+                        if ($row['vidljivost']==1) echo 'display: none; ';
+                        echo 'margin-left:50px; border-radius: 5px;" id="delete'.$i.'" onclick="setFileDivBgColor(\''.$row['id'].'\'); showFileLink(\''.$row['id'].'\');">
+                            <span class="fas fa-eye"></span>
+                        </button>                        
+                        <button id="btn-file-hide'.$row['id'].'" type="button" class="btn-primary" style="';
+                        if ($row['vidljivost']==0) echo 'display: none; ';
+                        echo 'margin-left:50px; border-radius: 5px;" id="delete'.$i.'" onclick="setFileDivBgColor(\''.$row['id'].'\'); hideFileLink(\''.$row['id'].'\');">
+                            <span class="fas fa-eye-slash"></span>
+                        </button>
+                        <button id="btn-file-delete'.$row['id'].'" type="button" class="btn-danger" style="margin-left:5px; border-radius: 5px;" id="delete'.$i.'" onclick="setFileDivBgColor(\''.$row['id'].'\'); deleteFileLink(\''.$row['id'].'\');">
+                            <span class="fas fa-trash"></span>
+                        </button>
+                        <button id="btn-file-restore'.$row['id'].'" type="button" class="btn-success" style="display: none; margin-left:5px; border-radius: 5px;" id="delete'.$i.'" onclick="setFileDivBgColor(\''.$row['id'].'\'); restoreFileLink(\''.$row['id'].'\');">
+                            <span class="fas fa-undo"></span>
+                        </button>
+                    </div>
+                    </li>';
+        }
+            echo   '<li class="fa">
+                        <input type="file" name="files'.$i.'[]" id="files'.$i.'" multiple>
+                    </li>
+                <ul>
+            </div>';
+    }
+?>
+    <input type='submit' name='submit' value='Sacuvaj'>
+</form>
+  
+
+
     <?php        
     } 
  } // kraj student sesije 
@@ -700,6 +781,52 @@ function hideNav() {
    document.querySelector(".sideNav").style.width = "0";
    document.querySelector('.main-content').style.marginLeft = "0px";
 }
+
+function showFileLink(file_link_id) {
+    var currentFileLink = document.getElementById('file-link'+file_link_id);
+    currentFileLink.style.opacity = "1.0";
+
+    document.getElementById('btn-file-show'+file_link_id).style.display = "none";
+    document.getElementById('btn-file-hide'+file_link_id).style.display = "";
+
+    document.getElementById('checkboxShowId'+file_link_id).checked = true;
+    document.getElementById('checkboxHideId'+file_link_id).checked = false;
+}
+function hideFileLink(file_link_id) {
+    var currentFileLink = document.getElementById('file-link'+file_link_id);
+    currentFileLink.style.opacity = "0.33";
+
+    document.getElementById('btn-file-hide'+file_link_id).style.display = "none";
+    document.getElementById('btn-file-show'+file_link_id).style.display = "";
+
+    document.getElementById('checkboxShowId'+file_link_id).checked = false;
+    document.getElementById('checkboxHideId'+file_link_id).checked = true;
+}
+function deleteFileLink(file_link_id) {
+    var currentFileLink = document.getElementById('file-link'+file_link_id);
+    currentFileLink.style.color = "red";
+    currentFileLink.style.textDecoration = "line-through";
+
+    document.getElementById('btn-file-delete'+file_link_id).style.display = "none";
+    document.getElementById('btn-file-restore'+file_link_id).style.display = "";
+
+    document.getElementById('checkboxDeleteId'+file_link_id).checked = true;
+}
+function restoreFileLink(file_link_id) {
+    var currentFileLink = document.getElementById('file-link'+file_link_id);
+    currentFileLink.style.color = "";
+    currentFileLink.style.textDecoration = "";
+
+    document.getElementById('btn-file-restore'+file_link_id).style.display = "none";
+    document.getElementById('btn-file-delete'+file_link_id).style.display = "";
+
+    document.getElementById('checkboxDeleteId'+file_link_id).checked = false;
+}
+function setFileDivBgColor(file_link_id) {
+    var currentFileDiv = document.getElementById('file-div'+file_link_id);
+    currentFileDiv.style.backgroundColor = "silver";
+}
+
 
 </script>
 </body>
