@@ -268,7 +268,6 @@ while($row = $result->fetch_assoc())
 ?>
 <div style="display: flex; justify-content: space-between">
     <h3><?php echo($row['naziv']); ?></h3>
-    <button class="btn-danger" style="border-radius: 5px">Sacuvaj</button>
     </div>
     <div contentEditable="true" class="opis"><?php echo($row['opis']); ?></div>
     <!-- dodato za test-->
@@ -295,108 +294,13 @@ while($row = $result->fetch_assoc())
     </div>   
     <br>    
     <!-- kraj dodatog za test-->
-
-    <div class="sekcija" style="border-top: 1px solid gray;">
-        <h4>Nedelja 1</h4>
-        <ul class="lista" >
-            <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
-            <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
-            <li class="fa"><a>&#xf15c; </a>Fajl_3.doc</li>
-            <!--<li class="fa"><a>&#xf15c; </a>Fajl_4.doc</li>-->
-        <ul>
-    </div>
-
-    <div class="sekcija">
-        <h4>Nedelja 2</h4>
-        <ul class="lista" >
-            <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
-            <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
-        <ul>
-    </div>
-
-    <div class="sekcija">
-        <h4>Nedelja 3</h4>
-        <ul class="lista" >
-            <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
-            <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
-        <ul>
-    </div>
-    
-    <div class="sekcija">
-        <h4>Nedelja 4</h4>
-        <ul class="lista" >
-            <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
-            <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
-        <ul>
-    </div>
-    <div class="sekcija">
-        <h4>Nedelja 5</h4>
-        <ul class="lista" >
-            <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
-            <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
-        <ul>
-    </div>
-
-    <div class="sekcija">
-        <h4>Nedelja 6</h4>
-        <ul class="lista" >
-            <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
-            <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
-        <ul>
-    </div>
-    
-    <div class="sekcija">
-        <h4>Nedelja 7</h4>
-        <ul class="lista" >
-            <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
-            <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
-        <ul>
-    </div>
-    <div class="sekcija">
-        <h4>Nedelja 8</h4>
-    </div>
-    
-    <div class="sekcija">
-        <h4>Nedelja 9</h4>
-    </div>
-    <div class="sekcija">
-        <h4>Nedelja 10</h4>
-    </div>
-
-    <div class="sekcija">
-        <h4>Nedelja 11</h4>
-        <ul>
-        <ul>
-    </div>
-    
-    <div class="sekcija">
-        <h4>Nedelja 12</h4>
-        <ul>
-        <ul>
-    </div>
-    <div class="sekcija">
-        <h4>Nedelja 13</h4>
-        <ul>
-        <ul>
-    </div>
-    
-    <div class="sekcija">
-        <h4>Nedelja 14</h4>
-        <ul>
-        <ul>
-    </div>
-    <div class="sekcija">
-        <h4>Nedelja 15</h4>
-        <ul>
-        <ul>
-    </div>
-</div>
 <?php        
     }
 } // kraj student sesije 
 ?>
+
 <?php
-    if($_SESSION["tipKorisnika"] == "profesor")
+    if($_SESSION["tipKorisnika"] == "profesor") //pocetak profesor sesije
     {
     ?>
     <div class='wrapper'>
@@ -413,8 +317,7 @@ while($row = $result->fetch_assoc())
     <div style="display: flex; justify-content: space-between">
         <h3><?php echo($row['naziv']); ?></h3>
         <div>
-        <button class="btn-danger" style="border-radius: 5px">Izmeni</button>
-        <input class="btn-primary" style="border-radius: 5px;" form="files-upload" type='submit' name='submit' value='Sacuvaj' onclick="return confirm('Da li ste sigurni da zelite da sacuvate promene?')">
+        <input class="btn-danger" style="border-radius: 5px;" form="files-upload" type='submit' name='submit' value='Sacuvaj' onclick="return confirm('Da li ste sigurni da zelite da sacuvate promene?')">
         </div>
         </div>
         <div contentEditable="true" class="opis"><?php echo($row['opis']); ?></div>
@@ -460,10 +363,48 @@ while($row = $result->fetch_assoc())
         </div>   
         <br>       
         <!-- kraj dodatog za test-->
-
+    <?php        
+    } 
+ } // kraj profesor sesije 
+?>
 
 <?php
-    if(isset($_POST['submit'])){
+    if($_SESSION["tipKorisnika"] == "admin") //pocetak admin sesije
+    {
+    ?>
+    <div class='wrapper'>
+    <?php
+    $sifra = $_SESSION['kurs']; 
+    $mysqli = new mysqli('localhost', 'root', '', 'portal') or die(mysqli_error($mysqli));
+    $mysqli -> set_charset("utf8");
+    
+    $result= $mysqli->query("SELECT * FROM kurs WHERE sifra_kursa='$sifra'") or die($mysqli->error);
+    while($row = $result->fetch_assoc())
+    {
+    ?>
+    <div style="display: flex; justify-content: space-between">
+        <h3><?php echo($row['naziv']); ?></h3>
+        <div>
+        <input class="btn-danger" style="border-radius: 5px;" form="files-upload" type='submit' name='submit' value='Sacuvaj' onclick="return confirm('Da li ste sigurni da zelite da sacuvate promene?')">
+
+        </div>
+        </div>
+        <div class="opis">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur mollitia reiciendis quia sunt tempore vel totam magni, facere voluptatem nostrum, eum nobis corporis, harum quo delectus aliquid fugiat dolorum possimus. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perspiciatis quo porro sequi repudiandae ab, sit, nemo architecto sunt fuga debitis laborum unde! Iusto nam ipsa enim fugiat quisquam? Quod, ea! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum aliquid assumenda fugit beatae ratione? Et itaque, iusto quia libero rerum veniam officiis dignissimos nisi, in expedita autem minus consequuntur id!</div>
+        <div style=" float:right; ">
+        </div>
+        <!-- dodato za test -->
+        <div>
+            <a href="rezultati_test.php"><button class="btn-primary" style="border-radius: 5px;">Rezultati</button></a>
+        </div>
+        <br>  
+        <!-- kraj dodatog za test -->
+        <?php        
+    } 
+ } // kraj admin sesije 
+?>
+
+<?php
+    if(($_SESSION["tipKorisnika"] == "profesor" || $_SESSION["tipKorisnika"] == "admin") && isset($_POST['submit'])){
         //uciniti fajl vidljivim
         if(isset($_POST['checkboxShow'])){
             $show_checkboxes = $_POST['checkboxShow'];
@@ -511,6 +452,9 @@ while($row = $result->fetch_assoc())
 
         //upload fajlova
         for ($i=0; $i < 15; $i++) {
+        $result = $mysqli->query("SELECT * FROM fajl WHERE sifra_kursa='$sifra' AND id_sekcije='$i' ORDER BY redni_broj DESC LIMIT 1") or die($mysqli->error);
+        $row = $result->fetch_assoc();
+
             $count_files = count($_FILES['files'.$i]['name']);
             for ($j=0; $j < $count_files; $j++) {
                 $file_name = $_FILES['files'.$i]['name'][$j];
@@ -523,14 +467,23 @@ while($row = $result->fetch_assoc())
                     $file_dest="fajlovi/$file_random_name";
                     move_uploaded_file($file_tmp_name,$file_dest);
 
-                    $files_insert = "INSERT INTO fajl (id, naziv, lokacija, tip_fajla, sifra_kursa, id_sekcije, redni_broj, vidljivost) VALUES (0, '$file_name', '$file_dest', '$file_act_ext', '$sifra', '$i', '$j', 0);";
+                    $redni_broj = $row['redni_broj'] + 1 + $j;
+
+                    $files_insert = "INSERT INTO fajl (id, naziv, lokacija, tip_fajla, sifra_kursa, id_sekcije, redni_broj, vidljivost) VALUES (0, '$file_name', '$file_dest', '$file_act_ext', '$sifra', '$i', '$redni_broj', 0);";
                     mysqli_query($mysqli,$files_insert);
                 }
             }
         }        
     }
 ?>
-<form id="files-upload" method='post'action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype='multipart/form-data'>
+<?php
+    //forma ce biti prikazana samo profesoru i adminu
+    if($_SESSION["tipKorisnika"] == "profesor" || $_SESSION["tipKorisnika"] == "admin"){
+?>
+        <form id="files-upload" method='post'action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype='multipart/form-data'>
+<?php
+    }
+?>
 <?php
     //postavljanje fajlova i opcija po nedeljama
     for ($i=0; $i < 15; $i++) {
@@ -545,9 +498,13 @@ while($row = $result->fetch_assoc())
 
         $result = $mysqli->query("SELECT * FROM fajl WHERE sifra_kursa='$sifra' AND id_sekcije='$i' ORDER BY redni_broj ASC") or die($mysqli->error);
         while($row = $result->fetch_assoc()){
-            echo   '<li class="fa">
-                    <div id="file-div'.$row['id'].'" style="display: inline-block; padding: 5px;">
-                        <input style="display: none;" id="checkboxShowId'.$row['id'].'" type="checkbox" name="checkboxShow[]" value="'.$row['id'].'" ';
+            if (!($_SESSION["tipKorisnika"] == "student" && $row['vidljivost']==0)) {
+                echo   '<li class="fa">
+                        <div id="file-div'.$row['id'].'" style="display: inline-block; padding: 5px;">';
+
+                    //pomocna checkbox polja za izmene
+                    if($_SESSION["tipKorisnika"] == "profesor" || $_SESSION["tipKorisnika"] == "admin"){
+                        echo '<input style="display: none;" id="checkboxShowId'.$row['id'].'" type="checkbox" name="checkboxShow[]" value="'.$row['id'].'" ';
                         echo ($row['vidljivost']==1) ? 'checked' : '';
                         echo '/>
 
@@ -555,14 +512,19 @@ while($row = $result->fetch_assoc())
                         echo ($row['vidljivost']==0) ? 'checked' : '';
                         echo '/>
 
-                        <input style="display: none;" id="checkboxDeleteId'.$row['id'].'" type="checkbox" name="checkboxDelete[]" value="'.$row['id'].'" />
+                        <input style="display: none;" id="checkboxDeleteId'.$row['id'].'" type="checkbox" name="checkboxDelete[]" value="'.$row['id'].'" />';
+                    }
 
-                        <a id="file-link'.$row['id'].'" style="opacity: ';
+                    //link ka fajlu - studentu se ne prikazuju nevidljivi fajlovi
+                        echo '<a id="file-link'.$row['id'].'" style="opacity: ';
                         echo ($row['vidljivost']==0) ? 0.33 : 1;
                         echo '" href="'.$row['lokacija'].'">
                             <span class="fas fa-file"></span> '.$row['naziv'].'
-                        </a>
-                        <button id="btn-file-show'.$row['id'].'" type="button" class="btn-primary" style="';
+                        </a>';
+
+                    //tasteri za izmene
+                    if($_SESSION["tipKorisnika"] == "profesor" || $_SESSION["tipKorisnika"] == "admin"){
+                        echo '<button id="btn-file-show'.$row['id'].'" type="button" class="btn-primary" style="';
                         if ($row['vidljivost']==1) echo 'display: none; ';
                         echo 'margin-left:50px; border-radius: 5px;" id="delete'.$i.'" onclick="setFileDivBgColor(\''.$row['id'].'\'); showFileLink(\''.$row['id'].'\');">
                             <span class="fas fa-eye"></span>
@@ -577,184 +539,32 @@ while($row = $result->fetch_assoc())
                         </button>
                         <button id="btn-file-restore'.$row['id'].'" type="button" class="btn-success" style="display: none; margin-left:5px; border-radius: 5px;" id="delete'.$i.'" onclick="setFileDivBgColor(\''.$row['id'].'\'); restoreFileLink(\''.$row['id'].'\');">
                             <span class="fas fa-undo"></span>
-                        </button>
-                    </div>
+                        </button>';
+                    }
+                    echo '</div>
                     </li>';
+            }
         }
+        if($_SESSION["tipKorisnika"] == "profesor" || $_SESSION["tipKorisnika"] == "admin"){
             echo   '<li class="fa">
                         <input type="file" name="files'.$i.'[]" id="files'.$i.'" multiple>
-                    </li>
-                <ul>
+                    </li>';
+        }
+                echo '<ul>
             </div>';
     }
 ?>
-    <input type='submit' name='submit' value='Sacuvaj'>
-</form>
-  
 
-
-    <?php        
-    } 
- } // kraj student sesije 
-?>
 <?php
-    if($_SESSION["tipKorisnika"] == "admin")
-    {
-    ?>
-    <div class='wrapper'>
-    <?php
-    $sifra = $_SESSION['kurs']; 
-    $mysqli = new mysqli('localhost', 'root', '', 'portal') or die(mysqli_error($mysqli));
-    $mysqli -> set_charset("utf8");
-    
-    $result= $mysqli->query("SELECT * FROM kurs WHERE sifra_kursa='$sifra'") or die($mysqli->error);
-    while($row = $result->fetch_assoc())
-    {
-    ?>
-    <div style="display: flex; justify-content: space-between">
-        <h3><?php echo($row['naziv']); ?></h3>
-        <div>
-        <button class="btn-danger" style="border-radius: 5px">Izmeni</button>
-        <button class="btn-primary" style="border-radius: 5px;">Sacuvaj</button>
-        </div>
-        </div>
-        <div class="opis">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur mollitia reiciendis quia sunt tempore vel totam magni, facere voluptatem nostrum, eum nobis corporis, harum quo delectus aliquid fugiat dolorum possimus. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perspiciatis quo porro sequi repudiandae ab, sit, nemo architecto sunt fuga debitis laborum unde! Iusto nam ipsa enim fugiat quisquam? Quod, ea! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum aliquid assumenda fugit beatae ratione? Et itaque, iusto quia libero rerum veniam officiis dignissimos nisi, in expedita autem minus consequuntur id!</div>
-        <div style=" float:right; ">
-        </div>
-        <!-- dodato za test -->
-        <div>
-            <a href="rezultati_test.php"><button class="btn-primary" style="border-radius: 5px;">Rezultati</button></a>
-        </div>
-        <br>  
-        <!-- kraj dodatog za test -->
-        <div class="sekcija" style="border-top: 1px solid gray;">
-            <h4>Nedelja 1</h4>
-        <div>
-        <button class="btn-primary" style="border-radius: 5px">Dodaj fajl</button>
-        </div>
-            <ul class="lista" >
-            <div style="justify-content: space-between;">
-                <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf </li>
-                <button style="margin-left:1050px; border-radius:5px;" class='btn-danger'>obrisi</button>
-            </div>
-            <div style="justify-content: space-between;">
-                <li class="fa"><a>&#xf15c; </a>Fajl_2.pdf </li>
-                <button style="margin-left:1050px; border-radius:5px;" class='btn-danger'>obrisi</button>
-            </div>
-            <div style="justify-content: space-between;">
-                <li class="fa"><a>&#xf15c; </a>Fajl_3.pdf </li>
-                <button style="margin-left:1050px; border-radius:5px;" class='btn-danger'>obrisi</button>
-            </div>
-            <div style="justify-content: space-between;">
-                <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf </li>
-                <button style="margin-left:1050px; border-radius:5px;" class='btn-danger'>obrisi</button>
-            </div>
-            <ul>
-        </div>
-    
-        <div class="sekcija">
-            <h4>Nedelja 2</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul class="lista" >
-                <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
-                <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
-            <ul>
-        </div>
-    
-        <div class="sekcija">
-            <h4>Nedelja 3</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul class="lista" >
-                <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
-                <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
-            <ul>
-        </div>
-        
-        <div class="sekcija">
-            <h4>Nedelja 4</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul class="lista" >
-                <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
-                <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
-            <ul>
-        </div>
-        <div class="sekcija">
-            <h4>Nedelja 5</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul class="lista" >
-                <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
-                <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
-            <ul>
-        </div>
-    
-        <div class="sekcija">
-            <h4>Nedelja 6</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul class="lista" >
-                <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
-                <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
-            <ul>
-        </div>
-        
-        <div class="sekcija">
-            <h4>Nedelja 7</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul class="lista" >
-                <li class="fa"><a>&#xf15c; </a>Fajl_1.pdf</li>
-                <li class="fa"><a>&#xf15c; </a>Fajl_2.doc</li>
-            <ul>
-        </div>
-        <div class="sekcija">
-            <h4>Nedelja 8</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-        </div>
-        
-        <div class="sekcija">
-            <h4>Nedelja 9</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-        </div>
-        <div class="sekcija">
-            <h4>Nedelja 10</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-        </div>
-    
-        <div class="sekcija">
-            <h4>Nedelja 11</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul>
-            <ul>
-        </div>
-        
-        <div class="sekcija">
-            <h4>Nedelja 12</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul>
-            <ul>
-        </div>
-        <div class="sekcija">
-            <h4>Nedelja 13</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul>
-            <ul>
-        </div>
-        
-        <div class="sekcija">
-            <h4>Nedelja 14</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul>
-            <ul>
-        </div>
-        <div class="sekcija">
-            <h4>Nedelja 15</h4>
-        <button class="btn-danger" style="border-radius: 5px">Dodaj fajl</button>
-            <ul>
-            <ul>
-        </div>
-    </div>
-    <?php        
-    } 
- } // kraj student sesije 
+    if($_SESSION["tipKorisnika"] == "profesor" || $_SESSION["tipKorisnika"] == "admin"){
 ?>
+        </form>
+<?php
+    }
+?>
+<!--Kraj wraper-a-->
+</div>
+
 <script>
 var i = 0;
 
