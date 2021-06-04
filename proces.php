@@ -74,7 +74,8 @@
         if($status=="onemogucen")
         {
             $kurs=$_SESSION['kurs'];
-            $mysqli->query("INSERT INTO test (sifra_kursa,status) VALUES ('$kurs','kreiran')");
+            $test=$_SESSION['test']+1;
+            $mysqli->query("INSERT INTO test (sifra_kursa,broj_testa,status) VALUES ('$kurs',$test,'kreiran')");
             $result= $mysqli->query("SELECT * FROM test WHERE sifra_kursa='$kurs' ORDER BY broj_testa DESC LIMIT 1") or die($mysqli->error);
             $row= $result->fetch_assoc();
             $_SESSION['test']=$row['broj_testa'];  
@@ -134,7 +135,7 @@
             }
         endfor;
         for($i=1; $i<$brodgovor+1; $i++ ):
-            if($_POST['tacno' .$i. '']=="tacno")
+            if(isset($_POST['tacno' .$i. '']))
             {
                 $cekirano=TRUE;
             }
