@@ -246,7 +246,7 @@ button {
         }
         else
         {
-            $_SESSION['test']=1;
+            $_SESSION['test']=0;
             $status="onemogucen";
             $poeni=0.0;
         }    
@@ -507,11 +507,9 @@ while($row = $result->fetch_assoc())
                         echo '<input style="display: none;" id="checkboxShowId'.$row['id'].'" type="checkbox" name="checkboxShow[]" value="'.$row['id'].'" ';
                         echo ($row['vidljivost']==1) ? 'checked' : '';
                         echo '/>
-
                         <input style="display: none;" id="checkboxHideId'.$row['id'].'" type="checkbox" name="checkboxHide[]" value="'.$row['id'].'" ';
                         echo ($row['vidljivost']==0) ? 'checked' : '';
                         echo '/>
-
                         <input style="display: none;" id="checkboxDeleteId'.$row['id'].'" type="checkbox" name="checkboxDelete[]" value="'.$row['id'].'" />';
                     }
 
