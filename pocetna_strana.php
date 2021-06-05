@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <?php
     session_start();
+
+    if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+        header("location: logIN.php");
+        exit;
+}
 ?>
 <html lang="sr-latin">
 <head>
@@ -192,6 +197,7 @@ button {
 ?>
         <a href="admin/student/RadSaBazomStudenata.php">Rad sa bazom studenata</a>
         <a href="admin/profesor/RadSaBazomProfesora.php">Rad sa bazom profesora</a>
+        <a href="admin/kurs/RadSaBazomKurseva.php">Rad sa bazom kurseva</a>
 <?php
         }
 ?>

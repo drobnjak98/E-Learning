@@ -555,5 +555,139 @@
 		
 
 		/*............................................................................................ */
+
+		/* .........................rad sa bazom kurs .................................................. */
+
+		//ubacivanje novog kursa u bazi
+		function InsertKurs($id, $email, $naziv, $godina){
+			$N1 = 0;
+			
+			//provera dali postoji student sa datim indeksom
+			if ($id != ""){
+				$sql1 = "SELECT * FROM kurs WHERE sifra_kursa LIKE '%".$id."%' ";
+				
+				$result1 = $this->conn->query($sql1);
+				$N1 = $result1->num_rows;				
+			}			
+			
+			if ($N1 > 0) {
+				 echo "<script language=\"javascript\">alert('Student sa unesenim podacima vec postoji.');</script>";
+			} else {
+				$sql = " INSERT INTO `kurs`(`sifra_kursa`, `email_nastavnik`, `naziv`, `godina`)
+					VALUES ('".$id."', '".$email."', '".$naziv."', '".$godina."')";
+				
+				if ($this->conn->query($sql) === TRUE) {
+				  //echo "New record created successfully";
+				} else {
+					echo "<script>
+						alert(\"Error: " . $sql . "<br>" . $this->conn->error."!\");
+					</script>";
+				}
+			}
+		}
+		
+		// prikaz informacija o kurseviam u tabeli	
+		function insertKursIntoTable($pojamPretrage, $tempPage) {
+			$sql = "SELECT * FROM kurs";
+			if ($pojamPretrage != "") {
+				$sql = $sql." WHERE email_nastavnik LIKE '%".$pojamPretrage."%' OR sifra_kursa LIKE '%".$pojamPretrage."%' OR naziv LIKE '%".$pojamPretrage."%' ";
+			}
+			
+			// koje studente ce prikazati
+			$start = ($tempPage - 1) * 5;
+			$end = $start + 5;
+			
+			$result = $this->conn->query($sql);
+			$this->n = $result->num_rows;
+			$i = 0;
+			if ($this->n > 0) {
+				while($i < $this->n) {
+					if($i == $end) break;
+					
+					$row = $result->fetch_assoc();
+					
+					if($i >= $start) {			
+						echo "<tr>				
+							<td> . </td>		
+							<td>" . $row['sifra_kursa'] . "</td>
+							<td>" . $row['email_nastavnik'] . "</td>
+							<td>". $row['naziv'] ." </td>
+							<td>". $row['godina'] ." </td>
+							<td>
+								<a href=\"izmena3.php?id=".$row['sifra_kursa']."&prof=".$row['email_nastavnik']."&naziv=".$row['naziv'].
+								"&godina=".$row['godina']."\" class=\"edit\" ><i class=\"material-icons\" data-toggle=\"tooltip\" title=\"Edit\">&#xE254;</i></a>
+								<a href=\"brisanje3.php?id=".$row['sifra_kursa']."\" class=\"delete\" ><i class=\"material-icons\" data-toggle=\"tooltip\" title=\"Delete\">&#xE872;</i></a>
+							</td>
+						</tr>";
+					}
+					
+					$i++;
+				}	
+			}	
+		}
+
+		// prikaz trenutne stranice u tabeli
+		function doPaginationKurs($tempPage) {						
+			if($this->n < 5){
+				$numberOfPages = 1;
+				$shown = $this->n;
+			} else {
+				$numberOfPages = ($this->n / 5) + 1;
+				$shown = 5;
+			}			
+			
+			$str = "<div class=\"hint-text\">Prikazano <b>".$shown."</b> od mogućih <b>".$this->n."</b> ulaza</div>".
+					"<ul class=\"pagination\">";
+						
+			// ovde se dodaje link PRETHODNI
+			if ($tempPage == 1) {			
+				$str = $str ."	<li class=\"page-item disabled\"><a>Prethodni</a></li>";
+			} else {
+				$next = $tempPage - 1;
+				$str = $str ."	<li class=\"page-item disabled\"><a href=\"RadSaBazomProfesora.php?tempPage=".$next."\">Prethodni</a></li>";
+			}
+			
+			//ovde mozda treba se promeni da prikaze i strane pre trenutne
+			for ($j = 0; $j < 5; $j++) {
+				$brojZaPrikazati = $tempPage + $j - 2;
+				if ($tempPage == $brojZaPrikazati) {
+					$str = $str . "<li class=\"page-item\"><a class=\"page-link\">".$tempPage."</a></li>";
+				} else if ($brojZaPrikazati < $numberOfPages && $brojZaPrikazati > 0){
+					$str = $str . "<li class=\"page-item\"><a href=\"RadSaBazomProfesora.php?tempPage=".$brojZaPrikazati."\" class=\"page-link\">".$brojZaPrikazati."</a></li>";
+				}
+			}
+			
+			//ovde se dodaje link tipa SLEDECI
+			if ($tempPage == ($numberOfPages % 10)	){
+				$str = $str .  "<li class=\"page-item\"><a class=\"page-link\">Sledeći</a></li>";
+			} else {
+				$next = $tempPage + 1;
+				$str = $str . "<li class=\"page-item\"><a href=\"RadSaBazomProfesora.php?tempPage=".$next."\" class=\"page-link\">Sledeći</a></li>";
+			}		
+			$str = $str . "  </ul>";
+			echo $str;
+		}
+
+		//brisanje kursa iz baze
+		function DeleteKurs($id) {
+			$sql = "DELETE FROM `kurs` WHERE `sifra_kursa`='".$id."'";
+			if ($this->conn->query($sql) === TRUE) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
+		//promena informacije o kursu
+		function UpdateKurs($ID, $email, $naziv, $godina) {
+			$sql = "UPDATE `kurs` SET `email_nastavnik`='".$email."',`naziv`='".$naziv."',`godina`='".$godina."' WHERE `sifra_kursa`='".$ID."'";
+			if ($this->conn->query($sql) === TRUE) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		/*.............................................................................................. */
 	}
 ?>

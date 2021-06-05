@@ -2,7 +2,7 @@
 	session_start();
 	
 	if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-		header("location: logIN.php");
+		header("location: ../../logIN.php");
 		exit;
 	}
 ?>
@@ -403,7 +403,8 @@ table.table .avatar {
 	<!-- ovde da se ubace konkretni linkovi ka kursevima ... -->
 	<a href="#" class="closeBtn">×</a>
 	<a href="RadSaBazomStudenata.php">Rad sa bazom studenata</a>
-	<a href="../profesor/RadSaBazomProfesora">Rad sa bazom profesora</a>
+	<a href="../profesor/RadSaBazomProfesora">Rad sa bazom profesora</a>	
+	<a href="../kurs/RadSaBazomKurseva.php">Rad sa bazom kurseva</a>
 	<a href="#">...</a>
     <a href="../../pocetna_strana.php">Pocetna strana</a>
 	<a href="../../proces.php?odjava">Odjava</a>

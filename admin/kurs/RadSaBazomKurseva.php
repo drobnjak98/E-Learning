@@ -62,16 +62,6 @@ body {
    margin-left: 50px;
 }
 
-/*
-button {
-   padding: 15px;
-   background-color: rgb(0, 27, 145);
-   color: rgb(255, 255, 255);
-   font-size: 20px;
-   border: none;
-   border-radius: 2%;
-}*/
-
 .main-content{
    transition: 0.5s;
 }
@@ -369,7 +359,7 @@ table.table .avatar {
 
 	$tempPage = 1;
 	$studentInput = "";
-	$ID = $ime = $prezime = $email = $studije = $sifra = "";
+	$sifra = $email = $naziv = $godina = "";
 	
 	if($_SERVER["REQUEST_METHOD"] == "GET")
 	{ 
@@ -384,13 +374,14 @@ table.table .avatar {
 			$studentInput = "";
 		}
 		
-		if(isset($_POST['ime']) && isset($_POST['prezime']) && isset($_POST['email'])) {
-			$ime = $_POST['ime'];
-			$prezime = $_POST['prezime'];
-			$email = $_POST['email'];
+		if(isset($_POST['sifra']) && isset($_POST['email']) && isset($_POST['naziv']) && isset($_POST['godina'])) {
 			$sifra = $_POST['sifra'];
-            // ovo treba se izmeni
-			$tabela->InsertProf($email, $ime, $prezime, $sifra);
+			$email = $_POST['email'];
+			$naziv = $_POST['naziv'];
+			$godina = $_POST['godina'];
+
+            // ... upisuj
+			$tabela->InsertKurs($sifra, $email, $naziv, $godina);
 		}		
 	}
 ?>
@@ -401,8 +392,7 @@ table.table .avatar {
 	<!-- ovde da se ubace konkretni linkovi ka kursevima ... -->
 	<a href="#" class="closeBtn">×</a>
 	<a href="../student/RadSaBazomStudenata.php">Rad sa bazom studenata</a>
-	<a href="">Rad sa bazom profesora</a>	
-	<a href="../kurs/RadSaBazomKurseva.php">Rad sa bazom kurseva</a>
+	<a href="../profesor/RadSaBazomProfesora">Rad sa bazom profesora</a>
 	<a href="#">...</a>
     <a href="../../pocetna_strana.php">Pocetna strana</a>
 	<a href="../../proces.php?odjava">Odjava</a>
@@ -435,17 +425,17 @@ table.table .avatar {
 					<div class="table-title">
 						<div class="row">
 							<div class="col-sm-6">
-								<h2>Rad sa <b>Profesorima</b></h2>
+								<h2>Rad sa <b>Kurseva</b></h2>
 							</div>							
 							<div class="col-sm-6">
-								<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Dodaj Novog Profesora</span></a>
+								<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Dodaj Novi Kurs</span></a>
 								<!-- <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Obriši</span></a>	-->					
 							</div>
 						</div>
 					</div>
 					<div>
 						<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-							<label for="fname">Pretraži profesora : </label>
+							<label for="fname">Pretraži kurs : </label>
 							<input type="text" id="fname" name="studentInput" value="<?php echo $studentInput; ?>">	
 							<button type="submit" ><i class="fa fa-search" aria-hidden="true"></i> </button>						
 						</form>
@@ -454,25 +444,23 @@ table.table .avatar {
 						<thead>
 						
 							<tr> 
-								<th>Email</th>
-								<th>Ime</th>
-								<th>Prezime</th>								
-							<!--	<th>Indeks</th> -->
-								<th>Sifra</th>
-							<!--	<th>Godina Studija</th> -->
-								<th>Akcije</th>
+								<th>.</th>
+								<th>Sifra kursa</th>
+								<th>Sifra profesora</th>
+								<th>Naziv</th>								
+								<th>Godina</th>
 							</tr>
 						</thead>
 						<tbody>
 										
 							 <?php 
-								$tabela->insertProfsIntoTable($studentInput, $tempPage);															
+								$tabela->insertKursIntoTable($studentInput, $tempPage);															
 								
 							 ?>
 						</tbody>
 					</table>
 					<div class="clearfix"> 
-						<?php echo $tabela->doPaginationProf($tempPage); ?>
+						<?php echo $tabela->doPaginationKurs($tempPage); ?>
 					</div>
 				</div>
 			</div>        
@@ -483,26 +471,26 @@ table.table .avatar {
 				<div class="modal-content">
 					<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" >
 						<div class="modal-header">						
-							<h4 class="modal-title">Dodaj profesora</h4>
+							<h4 class="modal-title">Dodaj kurs</h4>
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						</div>
 						<div class="modal-body">	
                             <div class="form-group">
-								<label>Email</label>
-								<input type="email" class="form-control" name="email" required>
-							</div>	
-							<div class="form-group">
-								<label>Ime</label>
-								<input type="text" class="form-control" name="ime" required>
-							</div>
-							<div class="form-group">
-								<label>Prezime</label>
-								<input type="text" class="form-control" name="prezime" required>
-							</div>
-							<div class="form-group">
-								<label>Sifra</label>
+								<label>Sifra kursa </label>								
 								<input type="text" class="form-control" name="sifra" required>
 							</div>	
+							<div class="form-group">
+								<label>Info o profesoru</label>
+								<input type="email" class="form-control" name="email" required>
+							</div>
+							<div class="form-group">
+								<label>Naziv</label>
+								<input type="text" class="form-control" name="naziv" required>
+							</div>
+							<div class="form-group">
+								<label>Godina</label>
+								<input type="text" class="form-control" name="godina" required>
+							</div>
 						</div>
 						<div class="modal-footer">
 							<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
