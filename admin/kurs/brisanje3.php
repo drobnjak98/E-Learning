@@ -102,7 +102,7 @@
 							<input type="text" class="form-control" name="idToDelete" id="elementToDelete" value="<?php echo $id;?>" readonly>
 						</div>						
 						<div class="modal-footer">
-							<a href="RadSaBazomStudenata.php" id="link">Odustani</a>
+							<a href="RadSaBazomKurseva.php" id="link">Odustani</a>
 							<!--<input type="button" class="btn btn-danger" onclick="obrisi()" value="Obriši"> -->
 							<input type="submit" class="btn btn-danger" value="Delete">
 						</div>
@@ -112,7 +112,7 @@
 		</div>
 				<script>
 			function povratak() {
-				window.location="RadSaBazomStudenata.php";
+				window.location="RadSaBazomKurseva.php";
 			}	
 		</script>
     </body>

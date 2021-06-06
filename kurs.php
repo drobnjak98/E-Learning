@@ -210,10 +210,26 @@ button {
 <body>
 <!-- stranicni meni-->
 <div class="sideNav">   
-    <!-- ovde da se ubace konkretni linkovi ka kursevima ... -->
+    	<!-- ovde da se ubace konkretni linkovi ka kursevima ... -->
         <a href="#" class="closeBtn">×</a>
-    <a href="proces.php?odjava">Odjava</a>
-        <a href="profil.php">Profil</a>
+        <br>
+	<a href="pocetna_strana.php">Pocetna strana</a>        
+<?php 
+        if($_SESSION["tipKorisnika"] != 'admin') {
+?>
+        <a href="profill.php">Profil</a><?php
+        }
+?>
+<?php 
+        if($_SESSION["tipKorisnika"] == 'admin') {
+?>
+        <a href="admin/student/RadSaBazomStudenata.php">Rad sa bazom studenata</a>
+        <a href="admin/profesor/RadSaBazomProfesora.php">Rad sa bazom profesora</a>
+        <a href="admin/kurs/RadSaBazomKurseva.php">Rad sa bazom kurseva</a>
+<?php
+        }
+?>
+        <a href="proces.php?odjava">Odjava</a>
     <!-- ................................................... -->
 </div>
 <div class="main-content">
@@ -269,7 +285,7 @@ while($row = $result->fetch_assoc())
 <div style="display: flex; justify-content: space-between">
     <h3><?php echo($row['naziv']); ?></h3>
     </div>
-    <div contentEditable="true" class="opis"><?php echo($row['opis']); ?></div>
+   <!-- <div contentEditable="true" class="opis"><?php //echo($row['opis']); ?></div> -->
     <!-- dodato za test-->
     <div>
     <?php
@@ -320,7 +336,7 @@ while($row = $result->fetch_assoc())
         <input class="btn-danger" style="border-radius: 5px;" form="files-upload" type='submit' name='submit' value='Sacuvaj' onclick="return confirm('Da li ste sigurni da zelite da sacuvate promene?')">
         </div>
         </div>
-        <div contentEditable="true" class="opis"><?php echo($row['opis']); ?></div>
+    <!--    <div contentEditable="true" class="opis"><?php //echo($row['opis']); ?></div> -->
         <div style=" float:right; ">
         </div>
         <!-- dodato za test-->
@@ -389,7 +405,7 @@ while($row = $result->fetch_assoc())
 
         </div>
         </div>
-        <div class="opis">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur mollitia reiciendis quia sunt tempore vel totam magni, facere voluptatem nostrum, eum nobis corporis, harum quo delectus aliquid fugiat dolorum possimus. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perspiciatis quo porro sequi repudiandae ab, sit, nemo architecto sunt fuga debitis laborum unde! Iusto nam ipsa enim fugiat quisquam? Quod, ea! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum aliquid assumenda fugit beatae ratione? Et itaque, iusto quia libero rerum veniam officiis dignissimos nisi, in expedita autem minus consequuntur id!</div>
+   <!--     <div class="opis">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur mollitia reiciendis quia sunt tempore vel totam magni, facere voluptatem nostrum, eum nobis corporis, harum quo delectus aliquid fugiat dolorum possimus. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perspiciatis quo porro sequi repudiandae ab, sit, nemo architecto sunt fuga debitis laborum unde! Iusto nam ipsa enim fugiat quisquam? Quod, ea! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum aliquid assumenda fugit beatae ratione? Et itaque, iusto quia libero rerum veniam officiis dignissimos nisi, in expedita autem minus consequuntur id!</div> -->
         <div style=" float:right; ">
         </div>
         <!-- dodato za test -->
@@ -583,6 +599,7 @@ openBtn.addEventListener("click", () => {
 let closeBtn = document.querySelector(".closeBtn");
 closeBtn.addEventListener("click", () => {
    hideNav();
+   i--;
 });
 function showNav() {
    document.querySelector(".sideNav").style.width = "200px";

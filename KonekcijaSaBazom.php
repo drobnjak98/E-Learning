@@ -644,7 +644,7 @@
 				$str = $str ."	<li class=\"page-item disabled\"><a>Prethodni</a></li>";
 			} else {
 				$next = $tempPage - 1;
-				$str = $str ."	<li class=\"page-item disabled\"><a href=\"RadSaBazomProfesora.php?tempPage=".$next."\">Prethodni</a></li>";
+				$str = $str ."	<li class=\"page-item disabled\"><a href=\"RadSaBazomKurseva.php?tempPage=".$next."\">Prethodni</a></li>";
 			}
 			
 			//ovde mozda treba se promeni da prikaze i strane pre trenutne
@@ -653,7 +653,7 @@
 				if ($tempPage == $brojZaPrikazati) {
 					$str = $str . "<li class=\"page-item\"><a class=\"page-link\">".$tempPage."</a></li>";
 				} else if ($brojZaPrikazati < $numberOfPages && $brojZaPrikazati > 0){
-					$str = $str . "<li class=\"page-item\"><a href=\"RadSaBazomProfesora.php?tempPage=".$brojZaPrikazati."\" class=\"page-link\">".$brojZaPrikazati."</a></li>";
+					$str = $str . "<li class=\"page-item\"><a href=\"RadSaBazomKurseva.php?tempPage=".$brojZaPrikazati."\" class=\"page-link\">".$brojZaPrikazati."</a></li>";
 				}
 			}
 			
@@ -662,7 +662,7 @@
 				$str = $str .  "<li class=\"page-item\"><a class=\"page-link\">Sledeći</a></li>";
 			} else {
 				$next = $tempPage + 1;
-				$str = $str . "<li class=\"page-item\"><a href=\"RadSaBazomProfesora.php?tempPage=".$next."\" class=\"page-link\">Sledeći</a></li>";
+				$str = $str . "<li class=\"page-item\"><a href=\"RadSaBazomKurseva.php?tempPage=".$next."\" class=\"page-link\">Sledeći</a></li>";
 			}		
 			$str = $str . "  </ul>";
 			echo $str;
