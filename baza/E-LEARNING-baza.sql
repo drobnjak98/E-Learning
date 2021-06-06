@@ -191,6 +191,50 @@ CREATE TABLE IF NOT EXISTS `portal`.`radio` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `fajl`
+--
+
+CREATE TABLE `fajl` (
+  `id` int(11) NOT NULL,
+  `naziv` varchar(255) NOT NULL,
+  `lokacija` varchar(255) NOT NULL,
+  `tip_fajla` varchar(50) NOT NULL,
+  `sifra_kursa` char(6) NOT NULL,
+  `id_sekcije` int(11) NOT NULL,
+  `redni_broj` int(11) NOT NULL,
+  `vidljivost` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `fajl`
+--
+ALTER TABLE `fajl`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `fajl`
+--
+ALTER TABLE `fajl`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
