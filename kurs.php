@@ -551,6 +551,10 @@ while($row = $result->fetch_assoc())
                 echo '<ul>
             </div>';
     }
+    if($_SESSION["tipKorisnika"] == "student")
+    {
+        echo '<button onclick="kursOdjava()" class="btn-primary" style="border-radius: 5px; display: block; margin-left: auto; margin-right:auto; margin-top:50px;">Odjavi me sa kursa</button>';
+    }
 ?>
 
 <?php
@@ -634,7 +638,13 @@ function setFileDivBgColor(file_link_id) {
     var currentFileDiv = document.getElementById('file-div'+file_link_id);
     currentFileDiv.style.backgroundColor = "silver";
 }
-
+function kursOdjava() 
+{
+    if (window.confirm("Želite da se odjavite sa kursa? Jeste li sigurni?")) 
+    {
+        location.replace("proces.php?kurs_odjava_dugme=<?php echo($_SESSION["kurs"]) ?>");
+    }
+}
 
 </script>
 </body>

@@ -44,7 +44,6 @@
 ?>
 
 <?php
-    $mysqli = new mysqli('localhost', 'root', '', 'portal') or die(mysqli_error($mysqli));
 
     if(isset($_GET['pocetna_kurs']))
     {
@@ -334,5 +333,16 @@
     {
         $_SESSION['uradjen']="ne";
         header("location: kurs.php");
+    } 
+?>
+<!-- odjava studenta sa kursa -->
+<?php
+    if(isset($_GET['kurs_odjava_dugme']))
+    {
+        $kurs=$_GET['kurs_odjava_dugme'];
+        $email=$_SESSION["idKorisnika"];
+        $mysqli = new mysqli('localhost', 'root', '', 'portal') or die(mysqli_error($mysqli));
+        $mysqli->query("DELETE FROM prati WHERE email_student='$email' AND sifra_kursa='$kurs'");  
+        header("location: pocetna_strana.php");
     } 
 ?>
