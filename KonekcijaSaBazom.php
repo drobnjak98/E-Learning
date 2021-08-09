@@ -361,7 +361,11 @@
 				$shown = $this->n;
 			} else {
 				$numberOfPages = ($this->n / 5) + 1;
-				$shown = 5;
+				if($tempPage == ($numberOfPages % 10)){
+					$shown = $this->n - ($tempPage - 1) * 5;
+				} else {					
+					$shown = 5;
+				}
 			}			
 			
 			$str = "<div class=\"hint-text\">Prikazano <b>".$shown."</b> od mogućih <b>".$this->n."</b> ulaza</div>".
@@ -416,9 +420,9 @@
 			}
 		}
 
-		/*..................................................................................... .........*/
+/*..................................................................................................... .........*/
 
-		/*..................rad sa bazom profesora..................................................*/
+/*............................rad sa bazom profesora..................................................*/
 
 		
 		//ubacivanje novog studenta u bazi profesora
@@ -498,7 +502,11 @@
 				$shown = $this->n;
 			} else {
 				$numberOfPages = ($this->n / 5) + 1;
-				$shown = 5;
+				if($tempPage == ($numberOfPages % 10)){
+					$shown = $this->n - ($tempPage - 1) * 5;
+				} else {					
+					$shown = 5;
+				}
 			}			
 			
 			$str = "<div class=\"hint-text\">Prikazano <b>".$shown."</b> od mogućih <b>".$this->n."</b> ulaza</div>".
@@ -554,9 +562,9 @@
 		}
 		
 
-		/*............................................................................................ */
+/*.................................................................................................................... */
 
-		/* .........................rad sa bazom kurs .................................................. */
+/* ..............................rad sa bazom kurs .................................................. */
 
 		//ubacivanje novog kursa u bazi
 		function InsertKurs($id, $email, $naziv, $godina){
@@ -633,7 +641,11 @@
 				$shown = $this->n;
 			} else {
 				$numberOfPages = ($this->n / 5) + 1;
-				$shown = 5;
+				if($tempPage == ($numberOfPages % 10)){
+					$shown = $this->n - ($tempPage - 1) * 5;
+				} else {					
+					$shown = 5;
+				}
 			}			
 			
 			$str = "<div class=\"hint-text\">Prikazano <b>".$shown."</b> od mogućih <b>".$this->n."</b> ulaza</div>".
@@ -688,6 +700,6 @@
 			}
 		}
 
-		/*.............................................................................................. */
+/*.............................................................................................. */
 	}
 ?>

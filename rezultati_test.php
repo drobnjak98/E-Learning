@@ -343,6 +343,8 @@
 				</div>
 			</div>        
 		</div>
+    <button onclick="povratak()" class="btn-primary" style="border-radius: 5px; display: block; margin-left: auto; margin-right:auto; margin-top:50px;">Povratak na stranicu kursa</button>
+
     <script>
       var i = 0;
       
@@ -369,8 +371,8 @@
           document.querySelector(".sideNav").style.width = "0";
           document.querySelector('.main-content').style.marginLeft = "0px";
       }
-      function forward(){
-        header('Location: Profil.php');
+      function povratak(){
+        location.replace("kurs.php");
       }
     </script>
   </body>
