@@ -483,7 +483,9 @@ while($row = $result->fetch_assoc())
                     $file_dest="fajlovi/$file_random_name";
                     move_uploaded_file($file_tmp_name,$file_dest);
 
-                    $redni_broj = $row['redni_broj'] + 1 + $j;
+                    if(empty($row))
+                        $redni_broj = $j;
+                    else $redni_broj = $row['redni_broj'] + 1 + $j;
 
                     $files_insert = "INSERT INTO fajl (id, naziv, lokacija, tip_fajla, sifra_kursa, id_sekcije, redni_broj, vidljivost) VALUES (0, '$file_name', '$file_dest', '$file_act_ext', '$sifra', '$i', '$redni_broj', 0);";
                     mysqli_query($mysqli,$files_insert);
