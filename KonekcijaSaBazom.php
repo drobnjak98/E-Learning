@@ -701,5 +701,31 @@
 		}
 
 /*.............................................................................................. */
+
+/*................................stranica kursa ..................................................... */
+				// prikaz studenata na stranici kursa kad je rofesor ulogovan
+				function prikazStudenata($sifra) {
+					
+					$sql = "SELECT s.ime_student as ime, s.prezime_student as prezime, s.email_student as mail, s.godina as godina  FROM prati p, student s, kurs k WHERE p.email_student = s.email_student AND p.sifra_kursa = k.sifra_kursa and p.sifra_kursa = '" . $sifra . "'";
+					$out = "";
+		
+					$result = $this->conn->query($sql);
+					$N = $result->num_rows;
+					if ($N > 0) {				
+						while($row = $result->fetch_assoc()) {
+							//$out .= "<li><a href=\"proces.php?pocetna_kurs=".$row['sifra_kursa']."\">".$row['naziv']."</a></li>";
+							$out .= "<tr>
+							<td>".$row['ime']."</td>
+							<td>".$row['prezime']."</td>
+							<td>".$row['mail']."</td>
+							<td>".$row['godina']."</td>
+							</tr>
+							<tr>";
+						}
+					}
+					echo $out;
+					
+				}
+/*.......................................................................................................*/
 	}
 ?>

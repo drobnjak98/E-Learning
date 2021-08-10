@@ -192,7 +192,18 @@ button {
     padding-top:24px;
     font-size: 20px;
 }
+/* ...... css za popup tabellu*/
 
+.my-custom-scrollbar {
+position: relative;
+height: 200px;
+overflow: auto;
+}
+.table-wrapper-scroll-y {
+display: block;
+}
+
+/*.................. */
 </style>
 <script>
     <?php
@@ -581,9 +592,52 @@ while($row = $result->fetch_assoc())
         </form>
 <?php
     }
+    if($_SESSION["tipKorisnika"] == "profesor")
+    {
+        echo '<div style="text-align: center; margin-top: 20px"> <a href="#addEmployeeModal" class="btn btn-primary" data-toggle="modal"><span>Prikazi studente sa predmeta</span></a></div>';
+    }
 ?>
 <!--Kraj wraper-a-->
 </div>
+
+<!-- Edit Modal HTML -->
+<div id="addEmployeeModal" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+                    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+
+                        <div class="modal-header">						
+							<h4 class="modal-title">Dodaj kurs</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						</div>
+
+                        <div class="modal-body">
+                            <table class="table table-bordered table-striped table-sm ">
+                            <thead>
+                                <tr>
+                                <th scope="col">Ime:</th>
+                                <th scope="col">Prezime:</th>
+                                <th scope="col">E-mail:</th>                                
+                                <th scope="col">Godina studija:</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                        include './KonekcijaSaBazom.php';
+                                        $tabela = new KonekcijaSaBazom();
+                                        $tabela->prikazStudenata($_SESSION['kurs']);           
+                                ?>
+                            </tbody>
+                            </table>
+                        </div>
+
+                        <div class="modal-footer">
+							<input type="button" class="btn btn-success" data-dismiss="modal" value="Izlaz">
+						</div>
+                    </div> 
+				</div>
+			</div>
+		</div>
 
 <script>
 var i = 0;
