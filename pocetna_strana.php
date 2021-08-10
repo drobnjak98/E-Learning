@@ -177,7 +177,21 @@ button {
         }
         $_SESSION['student_kurs_sifra_greska']="";
     ?>
-</script>  
+</script>
+<!--dodat kod-->
+<script>
+    <?php
+        $greska=$_SESSION['nastavnik_kurs_sifra_greska'];
+        if($greska!="")
+        {
+    ?>
+            alert(<?php echo "\"" .$greska. "\""; ?>);
+    <?php   
+        }
+        $_SESSION['nastavnik_kurs_sifra_greska']="";
+    ?>
+</script>
+<!--kraj dodatog koda--> 
 </head>
 <body>
 <!-- stranicni meni-->
@@ -254,15 +268,24 @@ button {
     if($_SESSION["tipKorisnika"] == "profesor")
     {
 ?>
+<!-- dodat kod-->
+        <div id="tekst">
+            <form action="proces.php" method="POST">
+                <input type="text" name="sifra" placeholder="šifra kursa" style=" margin-left:20px; margin-bottom:15px; width: 60%;">
+                <button class="btn btn-success" type="submit" name="dodaj_kurs_sifra_profesor"  style=" margin-left:20px; margin-right:20px; margin-bottom:15px; width: 150px; "><i class="material-icons">&#xE147;</i>  Dodaj kurs</button>
+            </form>
+        </div>
+<!--kraj dodatog koda-->
         <div id="tekst">
             <h3>Moji kursevi:</h3>
             <p>Prva godina</p>
             <ul>
+<!-- promenjeni sql upiti u nastavku-->
 <?php
         $email=$_SESSION["idKorisnika"];
         $mysqli = new mysqli('localhost', 'root', '', 'portal') or die(mysqli_error($mysqli));
         $mysqli -> set_charset("utf8");
-        $result= $mysqli->query("SELECT * FROM  kurs WHERE email_nastavnik='$email' AND godina=1") or die($mysqli->error);
+        $result= $mysqli->query("SELECT * FROM predaje INNER JOIN kurs ON predaje.sifra_kursa=kurs.sifra_kursa WHERE predaje.email_nastavnik='$email' AND kurs.godina=1") or die($mysqli->error);
         while($row = $result->fetch_assoc())
         {
 ?>
@@ -274,7 +297,7 @@ button {
             <p>Druga godina</p>
             <ul>
 <?php
-        $result= $mysqli->query("SELECT * FROM  kurs WHERE email_nastavnik='$email' AND godina=2") or die($mysqli->error);
+        $result= $mysqli->query("SELECT * FROM predaje INNER JOIN kurs ON predaje.sifra_kursa=kurs.sifra_kursa WHERE predaje.email_nastavnik='$email' AND kurs.godina=2") or die($mysqli->error);
         while($row = $result->fetch_assoc())
         {
 ?>
@@ -286,7 +309,7 @@ button {
             <p>Treća godina</p>
             <ul>
 <?php
-        $result= $mysqli->query("SELECT * FROM  kurs WHERE email_nastavnik='$email' AND godina=3") or die($mysqli->error);
+        $result= $mysqli->query("SELECT * FROM predaje INNER JOIN kurs ON predaje.sifra_kursa=kurs.sifra_kursa WHERE predaje.email_nastavnik='$email' AND kurs.godina=3") or die($mysqli->error);
         while($row = $result->fetch_assoc())
         {
 ?>
@@ -298,7 +321,7 @@ button {
             <p>Četvrta godina</p>
             <ul>
 <?php
-        $result= $mysqli->query("SELECT * FROM  kurs WHERE email_nastavnik='$email' AND godina=4") or die($mysqli->error);
+        $result= $mysqli->query("SELECT * FROM predaje INNER JOIN kurs ON predaje.sifra_kursa=kurs.sifra_kursa WHERE predaje.email_nastavnik='$email' AND kurs.godina=4") or die($mysqli->error);
         while($row = $result->fetch_assoc())
         {
 ?>
@@ -311,6 +334,7 @@ button {
 <?php
     }
 ?>
+<!--kraj promenjenih sql upita-->
 <?php
     if($_SESSION["tipKorisnika"] == "admin")
     {

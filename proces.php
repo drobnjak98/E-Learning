@@ -12,7 +12,6 @@
         $email=$_SESSION['idKorisnika'];
         $result= $mysqli->query("SELECT * FROM student WHERE email_student='$email'") or die($mysqli->error);
         $row= $result->fetch_assoc();
-        $godina=$row['godina'];
         $result= $mysqli->query("SELECT * FROM kurs WHERE sifra_kursa='$sifra'") or die($mysqli->error);
         $row= $result->fetch_assoc();
         if($row!=null)
@@ -21,14 +20,8 @@
             $rows= $results->fetch_assoc();
             if($rows==null)
             {
-                if($row['godina']==$godina)
-                {
-                    $mysqli->query("INSERT INTO prati (email_student,sifra_kursa) VALUES ('$email','$sifra')");
-                }
-                else
-                {
-                    $_SESSION['student_kurs_sifra_greska']="Kurs se ne sluša na ovoj godini";
-                }
+                $mysqli->query("INSERT INTO prati (email_student,sifra_kursa) VALUES ('$email','$sifra')");
+
             }
             else
             {
@@ -42,6 +35,40 @@
         header("location: pocetna_strana.php");
     } 
 ?>
+
+<!-- dodat kod, i kod iznad ovog je izmenjen-->
+<?php
+    $mysqli = new mysqli('localhost', 'root', '', 'portal') or die(mysqli_error($mysqli));
+
+    if(isset($_POST['dodaj_kurs_sifra_profesor']))
+    {
+        
+        $sifra=$_POST['sifra'];
+        $email=$_SESSION['idKorisnika'];
+
+        $result= $mysqli->query("SELECT * FROM kurs WHERE sifra_kursa='$sifra'") or die($mysqli->error);
+        $row= $result->fetch_assoc();
+        if($row!=null)
+        {
+            $results= $mysqli->query("SELECT * FROM predaje WHERE sifra_kursa='$sifra' AND email_nastavnik='$email'") or die($mysqli->error);
+            $rows= $results->fetch_assoc();
+            if($rows==null)
+            {
+                $mysqli->query("INSERT INTO predaje (email_nastavnik,sifra_kursa) VALUES ('$email','$sifra')");
+            }
+            else
+            {
+                $_SESSION['nastavnik_kurs_sifra_greska']="Već predajete na ovom kursu";
+            }
+        }
+        else
+        {
+            $_SESSION['nastavnik_kurs_sifra_greska']="Uneta šifra ne odgovara nijednom postojećem kursu";
+        }
+        header("location: pocetna_strana.php");
+    } 
+?>
+<!--kraj dodatog koda-->
 
 <?php
 
@@ -343,6 +370,17 @@
         $email=$_SESSION["idKorisnika"];
         $mysqli = new mysqli('localhost', 'root', '', 'portal') or die(mysqli_error($mysqli));
         $mysqli->query("DELETE FROM prati WHERE email_student='$email' AND sifra_kursa='$kurs'");  
+        header("location: pocetna_strana.php");
+    } 
+?>
+<!-- !!dodato!!! odjava profesora sa kursa -->
+<?php
+    if(isset($_GET['kurs_kraj_predavanja_dugme']))
+    {
+        $kurs=$_GET['kurs_kraj_predavanja_dugme'];
+        $email=$_SESSION["idKorisnika"];
+        $mysqli = new mysqli('localhost', 'root', '', 'portal') or die(mysqli_error($mysqli));
+        $mysqli->query("DELETE FROM predaje WHERE email_nastavnik='$email' AND sifra_kursa='$kurs'");  
         header("location: pocetna_strana.php");
     } 
 ?>

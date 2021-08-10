@@ -408,6 +408,33 @@ table.table .avatar {
 	<a href="#">...</a>
     <a href="../../pocetna_strana.php">Pocetna strana</a>
 	<a href="../../proces.php?odjava">Odjava</a>
+	<a href="">a</a>
+	<a href="">a</a>
+	<a href="">a</a>
+	<a href="">a</a>
+	<a href="">a</a>
+	<a href="">a</a>
+	<a href="">a</a>
+	<a href="">a</a>
+	<a href="">a</a>
+	<a href="">a</a>
+	<a href="">a</a>
+	<a href="">a</a>
+	<a href="">a</a>
+	<a href="">a</a>
+	<a href="">a</a>
+	<a href="">a</a>
+	<a href="">a</a>
+	<ul>
+    <li>List item one</li>
+    <li><a  class="clk">List item two with subitems:</a> 
+        <ul class="sub">
+            <li>Subitem 1</li>
+            <li>Subitem 2</li>
+        </ul>
+    </li>
+    <li>Final list item</li>
+</ul>
 	<!-- ................................................... -->
 </div>
 <div class="main-content">
@@ -551,6 +578,19 @@ function hideNav() {
    document.querySelector(".sideNav").style.width = "0";
    document.querySelector('.main-content').style.marginLeft = "0px";
 }
+var j = 0;
+let btn = document.querySelector(".clk");
+btn.addEventListener("click", () => {
+	//console.log("jeeeee");
+	let list = document.querySelector(".sub");
+	if(j == 0){	
+		list.style.display = "none";
+		j++;
+	} else if(j == 1) {
+		list.style.display = "block";
+		j--;
+	}
+});
 
 </script>
 </body>

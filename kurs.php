@@ -596,6 +596,10 @@ while($row = $result->fetch_assoc())
     {
         echo '<div style="text-align: center; margin-top: 20px"> <a href="#addEmployeeModal" class="btn btn-primary" data-toggle="modal"><span>Prikazi studente sa predmeta</span></a></div>';
     }
+    if($_SESSION["tipKorisnika"] == "profesor")
+    {
+        echo '<button onclick="kursKrajPredavanja()" class="btn-primary" style="border-radius: 5px; display: block; margin-left: auto; margin-right:auto; margin-top:50px;">Izbaci me iz liste predavača</button>';
+    }
 ?>
 <!--Kraj wraper-a-->
 </div>
@@ -716,6 +720,13 @@ function kursOdjava()
     if (window.confirm("Želite da se odjavite sa kursa? Jeste li sigurni?")) 
     {
         location.replace("proces.php?kurs_odjava_dugme=<?php echo($_SESSION["kurs"]) ?>");
+    }
+}
+function kursKrajPredavanja() 
+{
+    if (window.confirm("Želite da prestanete da predajete na ovom kursu? Jeste li sigurni?")) 
+    {
+        location.replace("proces.php?kurs_kraj_predavanja_dugme=<?php echo($_SESSION["kurs"]) ?>");
     }
 }
 
