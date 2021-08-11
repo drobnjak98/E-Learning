@@ -9,6 +9,8 @@
         header("location: login.php");
         exit();
     }
+    include 'KonekcijaSaBazom.php';
+    $tabela = new KonekcijaSaBazom();
 ?>
 
 <html lang="sr-latin">
@@ -37,26 +39,27 @@
         }
 
         .sideNav {
-          height: 100vh;
-          width: 0;
-          position: fixed;
-          z-index: 1;
-          top: 0;
-          left: 0;
-          background-color: rgb(46, 218, 195);
-          overflow-x: hidden;
-          padding-top: 60px;
-          transition: 0.5s;
-        }
-        .sideNav a {
-          padding: 8px 8px 8px 32px;
-          text-decoration: none;
-          font-size: 16px;
-          color: #000000;
-          font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-          display: block;
-          transition: 0.3s;
-        }
+        height: 100vh;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: rgb(245, 239, 239);
+        overflow-x: hidden;
+        padding-top: 60px;
+        transition: 0.5s;
+      }
+      .sideNav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 18px;
+        font-style: italic;
+        color: #368B11;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: block;
+        transition: 0.3s;
+      }
         .sidenav a:hover {
           color: #f1f1f1;
         }
@@ -235,6 +238,11 @@
 
         <a href="profill.php">Profil</a>
 
+        <a  class="clk">Moji kursevi <b>></b> </a> 
+        <ul class="sub">
+            <?php echo $tabela->prikazKurseveNav($_SESSION["idKorisnika"], $_SESSION["tipKorisnika"]); ?>
+        </ul>
+
         <a href="proces.php?odjava">Odjava</a>
 	      <!-- ................................................... -->
     </div> 
@@ -374,6 +382,26 @@
       function povratak(){
         location.replace("kurs.php");
       }
+
+      //prikaz kurseva logika
+      var j = 0;
+      let clk = document.querySelector(".clk");
+      let list = document.querySelector(".sub");
+      list.style.display = "none";
+
+      clk.addEventListener("click", () => {
+        //console.log("jeeeee");
+        let list = document.querySelector(".sub");
+        if(j == 1){	
+          list.style.display = "none";
+              clk.innerHTML = "Moji kursevi <b>></b>";
+          j--;
+        } else if(j == 0) {
+          list.style.display = "block";
+              clk.innerHTML = "Moji kursevi <b>\\/<b>";
+          j++;
+        }
+      });
     </script>
   </body>
 </html>

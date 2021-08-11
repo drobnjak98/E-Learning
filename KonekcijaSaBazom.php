@@ -243,7 +243,7 @@
 			if($tip == "student") {
 				$sql = "SELECT * FROM prati INNER JOIN kurs ON prati.sifra_kursa=kurs.sifra_kursa WHERE prati.email_student='".$email."'";
 			} else{
-				$sql = "SELECT * FROM kurs WHERE email_nastavnik = '".$email."'";
+				$sql = "SELECT * FROM predaje INNER JOIN kurs ON predaje.sifra_kursa=kurs.sifra_kursa WHERE predaje.email_nastavnik = '".$email."'";
 			}
 			$out = "";
 
@@ -727,5 +727,27 @@
 					
 				}
 /*.......................................................................................................*/
-	}
+	
+/* ...............................stranicni navigacioni bar ............................................ */
+					// prikaz kurseva studenta na profilu
+		function prikazKurseveNav($email, $tip) {
+			if($tip == "student") {
+				$sql = "SELECT * FROM prati INNER JOIN kurs ON prati.sifra_kursa=kurs.sifra_kursa WHERE prati.email_student='".$email."'";
+			} else {
+				$sql = "SELECT * FROM predaje INNER JOIN kurs ON predaje.sifra_kursa=kurs.sifra_kursa WHERE predaje.email_nastavnik = '".$email."'";
+			}
+			$out = "";
+			$result = $this->conn->query($sql);
+			$N = $result->num_rows;
+			if ($N > 0) {				
+				while($row = $result->fetch_assoc()) {
+					//$out .= "<li><a href=\"proces.php?pocetna_kurs=".$row['sifra_kursa']."\">".$row['naziv']."</a></li>";
+					$out .= "<li><a href=\"kurs.php?pocetna_kurs=".$row['sifra_kursa']."\">".$row['naziv']." </a></li>";
+				}
+			}
+			echo $out;
+			
+		}
+/* ...................................................................................................... */
+}
 ?>

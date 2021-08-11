@@ -4,6 +4,9 @@
     if (isset($_GET['pocetna_kurs'])) {
     $_SESSION['kurs'] =  $_GET['pocetna_kurs'];
     }
+
+    include './KonekcijaSaBazom.php';
+    $tabela = new KonekcijaSaBazom();
 ?>
 <html lang="sr-latin">
 <head>
@@ -30,26 +33,27 @@ body {
 }
 
 .sideNav {
-   height: 100vh;
-   width: 0;
-   position: fixed;
-   z-index: 1;
-   top: 0;
-   left: 0;
-   background-color: rgb(46, 218, 195);
-   overflow-x: hidden;
-   padding-top: 60px;
-   transition: 0.5s;
-}
-.sideNav a {
-   padding: 8px 8px 8px 32px;
-   text-decoration: none;
-   font-size: 16px;
-   color: #000000;
-   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-   display: block;
-   transition: 0.3s;
-}
+        height: 100vh;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: rgb(245, 239, 239);
+        overflow-x: hidden;
+        padding-top: 60px;
+        transition: 0.5s;
+      }
+      .sideNav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 18px;
+        font-style: italic;
+        color: #368B11;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: block;
+        transition: 0.3s;
+      }
 .sidenav a:hover {
    color: #f1f1f1;
 }
@@ -240,6 +244,10 @@ display: block;
 <?php
         }
 ?>
+        <a  class="clk">Moji kursevi <b>></b> </a> 
+        <ul class="sub">
+            <?php echo $tabela->prikazKurseveNav($_SESSION["idKorisnika"], $_SESSION["tipKorisnika"]); ?>
+        </ul>
         <a href="proces.php?odjava">Odjava</a>
     <!-- ................................................... -->
 </div>
@@ -626,9 +634,7 @@ while($row = $result->fetch_assoc())
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php
-                                        include './KonekcijaSaBazom.php';
-                                        $tabela = new KonekcijaSaBazom();
+                                <?php                                        
                                         $tabela->prikazStudenata($_SESSION['kurs']);           
                                 ?>
                             </tbody>
@@ -729,6 +735,24 @@ function kursKrajPredavanja()
         location.replace("proces.php?kurs_kraj_predavanja_dugme=<?php echo($_SESSION["kurs"]) ?>");
     }
 }
+var j = 0;
+let clk = document.querySelector(".clk");
+let list = document.querySelector(".sub");
+list.style.display = "none";
+
+clk.addEventListener("click", () => {
+	//console.log("jeeeee");
+	let list = document.querySelector(".sub");
+	if(j == 1){	
+		list.style.display = "none";
+        clk.innerHTML = "Moji kursevi <b>></b>";
+		j--;
+	} else if(j == 0) {
+		list.style.display = "block";
+        clk.innerHTML = "Moji kursevi <b>\\/<b>";
+		j++;
+	}
+});
 
 </script>
 </body>

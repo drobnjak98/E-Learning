@@ -127,7 +127,7 @@
         z-index: 1;
         top: 0;
         left: 0;
-        background-color: rgb(46, 218, 195);
+        background-color: rgb(245, 239, 239);
         overflow-x: hidden;
         padding-top: 60px;
         transition: 0.5s;
@@ -136,13 +136,14 @@
         padding: 8px 8px 8px 32px;
         text-decoration: none;
         font-size: 18px;
-        color: #000000;
+        font-style: italic;
+        color: #368B11;
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         display: block;
         transition: 0.3s;
       }
       .sidenav a:hover {
-        color: #f1f1f1;
+        color: red;
       }
       .sideNav .closeBtn {
         position: absolute;
@@ -193,12 +194,13 @@
       <!-- ovde da se ubace konkretni linkovi ka kursevima ... -->
       <a href="#" class="closeBtn">×</a>
       <br>
-      <!-- ovako ce dabude nadalje ali zbog prezentiranja neka bude obicni link za sada
-      <button class="btn btn-light" onclick="window.location.href = 'profill.php';" style="margin-left: 15px"> <img  src="upload/<?php echo $profilna; ?>" width="25px" height="25px"/> <?php echo $_SESSION["podaciKorisnika"]; ?> </button>
-      -->
       <a href="pocetna_strana.php">Pocetna strana</a>
       <a href="profill.php">Profil</a>
-      <a href="proces.php?odjava">Odjava</a>
+      <a  class="clk">Moji kursevi <b>></b> </a> 
+        <ul class="sub">
+            <?php echo $tabela->prikazKurseveNav($_SESSION["idKorisnika"], $_SESSION["tipKorisnika"]); ?>
+        </ul>
+      <a href="proces.php?odjava">Odjava</a>							  
       <!-- ................................................... -->
     </div>
 
@@ -300,6 +302,26 @@
       function forward(){
         header('Location: Profil.php');
       }
+
+      //prikaz kurseva logika
+      var j = 0;
+      let clk = document.querySelector(".clk");
+      let list = document.querySelector(".sub");
+      list.style.display = "none";
+
+      clk.addEventListener("click", () => {
+        //console.log("jeeeee");
+        let list = document.querySelector(".sub");
+        if(j == 1){	
+          list.style.display = "none";
+              clk.innerHTML = "Moji kursevi <b>></b>";
+          j--;
+        } else if(j == 0) {
+          list.style.display = "block";
+              clk.innerHTML = "Moji kursevi <b>\\/<b>";
+          j++;
+        }
+      });
     </script>
             
     </body>

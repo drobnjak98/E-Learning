@@ -31,26 +31,27 @@ body {
 }
 
 .sideNav {
-   height: 100vh;
-   width: 0;
-   position: fixed;
-   z-index: 1;
-   top: 0;
-   left: 0;
-   background-color: rgb(46, 218, 195);
-   overflow-x: hidden;
-   padding-top: 60px;
-   transition: 0.5s;
-}
-.sideNav a {
-   padding: 8px 8px 8px 32px;
-   text-decoration: none;
-   font-size: 16px;
-   color: #000000;
-   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-   display: block;
-   transition: 0.3s;
-}
+        height: 100vh;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: rgb(245, 239, 239);
+        overflow-x: hidden;
+        padding-top: 60px;
+        transition: 0.5s;
+      }
+      .sideNav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 18px;
+        font-style: italic;
+        color: #368B11;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: block;
+        transition: 0.3s;
+      }
 .sidenav a:hover {
    color: #f1f1f1;
 }
@@ -401,40 +402,14 @@ table.table .avatar {
 <!-- stranicni meni-->
 <div class="sideNav">	
 	<!-- ovde da se ubace konkretni linkovi ka kursevima ... -->
-	<a href="#" class="closeBtn">×</a>
+	<a href="#" class="closeBtn">×</a><br>
+	<a href="../../pocetna_strana.php">Pocetna strana</a>
 	<a href="RadSaBazomStudenata.php">Rad sa bazom studenata</a>
 	<a href="../profesor/RadSaBazomProfesora">Rad sa bazom profesora</a>	
-	<a href="../kurs/RadSaBazomKurseva.php">Rad sa bazom kurseva</a>
-	<a href="#">...</a>
-    <a href="../../pocetna_strana.php">Pocetna strana</a>
+	<a href="../kurs/RadSaBazomKurseva.php">Rad sa bazom kurseva</a>    
 	<a href="../../proces.php?odjava">Odjava</a>
-	<a href="">a</a>
-	<a href="">a</a>
-	<a href="">a</a>
-	<a href="">a</a>
-	<a href="">a</a>
-	<a href="">a</a>
-	<a href="">a</a>
-	<a href="">a</a>
-	<a href="">a</a>
-	<a href="">a</a>
-	<a href="">a</a>
-	<a href="">a</a>
-	<a href="">a</a>
-	<a href="">a</a>
-	<a href="">a</a>
-	<a href="">a</a>
-	<a href="">a</a>
-	<ul>
-    <li>List item one</li>
-    <li><a  class="clk">List item two with subitems:</a> 
-        <ul class="sub">
-            <li>Subitem 1</li>
-            <li>Subitem 2</li>
-        </ul>
-    </li>
-    <li>Final list item</li>
-</ul>
+
+    
 	<!-- ................................................... -->
 </div>
 <div class="main-content">
@@ -578,19 +553,7 @@ function hideNav() {
    document.querySelector(".sideNav").style.width = "0";
    document.querySelector('.main-content').style.marginLeft = "0px";
 }
-var j = 0;
-let btn = document.querySelector(".clk");
-btn.addEventListener("click", () => {
-	//console.log("jeeeee");
-	let list = document.querySelector(".sub");
-	if(j == 0){	
-		list.style.display = "none";
-		j++;
-	} else if(j == 1) {
-		list.style.display = "block";
-		j--;
-	}
-});
+
 
 </script>
 </body>
