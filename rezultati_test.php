@@ -31,7 +31,7 @@
     <style>
         body
         {
-	        margin: 0;
+	        padding-top:20px;
         }
 
         .header {
@@ -251,13 +251,16 @@
 	    <div class="header">
 		    <p id="header_p"><img src="logo_moodle2.png" /></p>
 	    </div>
-        <div class="navbar">
-		    <div class="dropdown">
-			    <button class="openSideNav"><i class="fa fa-align-justify"></i></button>
-		    </div>
-		    <a class="right_side" href="#home"><i class="fa fa-home"></i></a>
-	    </div>
-    </div>
+      <nav class="navbar sticky-top navbar-dark bg-dark">
+          
+            <div class="dropdown">
+              <!-- sa klikom da dugme se otvara stranicni meni-->
+                <button class="openSideNav"><i class="fa fa-align-justify"></i></button>
+            </div>
+            <a id="right_side" href="pocetna_strana.php"><i class="fa fa-home"></i></a>
+  
+      </nav>
+    
     <?php
       $kurs=$_SESSION['kurs'];
       $mysqli = new mysqli('localhost', 'root', '', 'portal') or die(mysqli_error($mysqli));
@@ -352,7 +355,7 @@
 			</div>        
 		</div>
     <button onclick="povratak()" class="btn-primary" style="border-radius: 5px; display: block; margin-left: auto; margin-right:auto; margin-top:50px;">Povratak na stranicu kursa</button>
-
+    </div>
     <script>
       var i = 0;
       

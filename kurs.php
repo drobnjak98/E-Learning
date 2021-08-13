@@ -25,35 +25,36 @@
 <title>E-Ucenje</title>
 <style>
 body {
-    margin: 0;
+    padding-top:20px;
 }
 
 .header {
     text-align: center;
 }
 
-.sideNav {
-        height: 100vh;
-        width: 0;
-        position: fixed;
-        z-index: 1;
-        top: 0;
-        left: 0;
-        background-color: rgb(245, 239, 239);
-        overflow-x: hidden;
-        padding-top: 60px;
-        transition: 0.5s;
-      }
-      .sideNav a {
-        padding: 8px 8px 8px 32px;
-        text-decoration: none;
-        font-size: 18px;
-        font-style: italic;
-        color: #368B11;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        display: block;
-        transition: 0.3s;
-      }
+.sideNav 
+{
+    height: 100vh;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgb(245, 239, 239);
+    overflow-x: hidden;
+    padding-top: 60px;
+    transition: 0.5s;
+}
+    .sideNav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 18px;
+    font-style: italic;
+    color: #368B11;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    display: block;
+    transition: 0.3s;
+}
 .sidenav a:hover {
    color: #f1f1f1;
 }
@@ -120,8 +121,9 @@ button {
   background-color: red;
 }
 
+
 .right_side {
-    float: right;
+	float: right;
 }
 
 #tekst{
@@ -168,10 +170,14 @@ button {
 }
 
 .wrapper {
-    margin: 24px 80px;
+    margin: auto;
+    margin-top: 24px;
+    width: 60%;
     height: auto;
     padding: 48px;
-    border-radius: 15px;
+    background-clip: border-box;
+    border: 0 solid rgba(0,0,0,.125);
+    border-radius: .25rem;
     box-shadow: 0px 0px 12px 7px rgba(61,55,76,0.64);
 }
 .opis {
@@ -244,11 +250,18 @@ display: block;
 <?php
         }
 ?>
-        <a  class="clk">Moji kursevi <b>></b> </a> 
+<?php 
+    if($_SESSION["tipKorisnika"] != 'admin')
+    {
+?>
+        <a class="clk">Moji kursevi <b>></b> </a> 
         <ul class="sub">
             <?php echo $tabela->prikazKurseveNav($_SESSION["idKorisnika"], $_SESSION["tipKorisnika"]); ?>
         </ul>
-        <a href="proces.php?odjava">Odjava</a>
+<?php
+    }
+?>
+    <a href="proces.php?odjava">Odjava</a>
     <!-- ................................................... -->
 </div>
 <div class="main-content">
@@ -257,15 +270,16 @@ display: block;
         <p id="header_p"><img src="logo_moodle2.png" /></p>
     </div>
 
-    <div class="navbar">
+    <nav class="navbar sticky-top navbar-dark bg-dark">
+          
         <div class="dropdown">
-        <!-- sa klikom da dugme se otvara stranicni meni-->
+          <!-- sa klikom da dugme se otvara stranicni meni-->
             <button class="openSideNav"><i class="fa fa-align-justify"></i></button>
         </div>
-        <!-- link koje ce da baca na pocetnu stranu od trenutno ulogovanog korisnika -->
-        <a class="right_side" href="pocetna_strana.php"><i class="fa fa-home"></i></a>
-    </div>  
-</div>
+        <a id="right_side" href="pocetna_strana.php"><i class="fa fa-home"></i></a>
+  
+    </nav>
+
 <!-- dodato za test-->
 <?php
         $sifra=$_SESSION['kurs'];
@@ -437,6 +451,7 @@ while($row = $result->fetch_assoc())
     } 
  } // kraj admin sesije 
 ?>
+
 
 <?php
     if(($_SESSION["tipKorisnika"] == "profesor" || $_SESSION["tipKorisnika"] == "admin") && isset($_POST['submit'])){
@@ -610,6 +625,7 @@ while($row = $result->fetch_assoc())
     }
 ?>
 <!--Kraj wraper-a-->
+</div>
 </div>
 
 <!-- Edit Modal HTML -->

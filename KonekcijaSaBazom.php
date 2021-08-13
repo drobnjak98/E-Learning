@@ -567,7 +567,7 @@
 /* ..............................rad sa bazom kurs .................................................. */
 
 		//ubacivanje novog kursa u bazi
-		function InsertKurs($id, $email, $naziv, $godina){
+		function InsertKurs($id, $naziv, $godina){
 			$N1 = 0;
 			
 			//provera dali postoji student sa datim indeksom
@@ -579,10 +579,10 @@
 			}			
 			
 			if ($N1 > 0) {
-				 echo "<script language=\"javascript\">alert('Student sa unesenim podacima vec postoji.');</script>";
+				 echo "<script language=\"javascript\">alert('Kurs sa ovom šifrom već postoji.');</script>";
 			} else {
-				$sql = " INSERT INTO `kurs`(`sifra_kursa`, `email_nastavnik`, `naziv`, `godina`)
-					VALUES ('".$id."', '".$email."', '".$naziv."', '".$godina."')";
+				$sql = " INSERT INTO `kurs`(`sifra_kursa`, `naziv`, `godina`)
+					VALUES ('".$id."',  '".$naziv."', '".$godina."')";
 				
 				if ($this->conn->query($sql) === TRUE) {
 				  //echo "New record created successfully";
@@ -598,7 +598,7 @@
 		function insertKursIntoTable($pojamPretrage, $tempPage) {
 			$sql = "SELECT * FROM kurs";
 			if ($pojamPretrage != "") {
-				$sql = $sql." WHERE email_nastavnik LIKE '%".$pojamPretrage."%' OR sifra_kursa LIKE '%".$pojamPretrage."%' OR naziv LIKE '%".$pojamPretrage."%' ";
+				$sql = $sql." WHERE  sifra_kursa LIKE '%".$pojamPretrage."%' OR naziv LIKE '%".$pojamPretrage."%' ";
 			}
 			
 			// koje studente ce prikazati
@@ -618,11 +618,10 @@
 						echo "<tr>				
 							<td> . </td>		
 							<td>" . $row['sifra_kursa'] . "</td>
-							<td>" . $row['email_nastavnik'] . "</td>
 							<td>". $row['naziv'] ." </td>
 							<td>". $row['godina'] ." </td>
 							<td>
-								<a href=\"izmena3.php?id=".$row['sifra_kursa']."&prof=".$row['email_nastavnik']."&naziv=".$row['naziv'].
+								<a href=\"izmena3.php?id=".$row['sifra_kursa']."&naziv=".$row['naziv'].
 								"&godina=".$row['godina']."\" class=\"edit\" ><i class=\"material-icons\" data-toggle=\"tooltip\" title=\"Edit\">&#xE254;</i></a>
 								<a href=\"brisanje3.php?id=".$row['sifra_kursa']."\" class=\"delete\" ><i class=\"material-icons\" data-toggle=\"tooltip\" title=\"Delete\">&#xE872;</i></a>
 							</td>
@@ -691,8 +690,8 @@
 		}
 		
 		//promena informacije o kursu
-		function UpdateKurs($ID, $email, $naziv, $godina) {
-			$sql = "UPDATE `kurs` SET `email_nastavnik`='".$email."',`naziv`='".$naziv."',`godina`='".$godina."' WHERE `sifra_kursa`='".$ID."'";
+		function UpdateKurs($ID, $naziv, $godina) {
+			$sql = "UPDATE `kurs` SET `naziv`='".$naziv."',`godina`='".$godina."' WHERE `sifra_kursa`='".$ID."'";
 			if ($this->conn->query($sql) === TRUE) {
 				return true;
 			} else {

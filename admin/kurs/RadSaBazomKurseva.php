@@ -360,7 +360,7 @@ table.table .avatar {
 
 	$tempPage = 1;
 	$studentInput = "";
-	$sifra = $email = $naziv = $godina = "";
+	$sifra = $naziv = $godina = "";
 	
 	if($_SERVER["REQUEST_METHOD"] == "GET")
 	{ 
@@ -375,14 +375,13 @@ table.table .avatar {
 			$studentInput = "";
 		}
 		
-		if(isset($_POST['sifra']) && isset($_POST['email']) && isset($_POST['naziv']) && isset($_POST['godina'])) {
+		if(isset($_POST['sifra']) && isset($_POST['naziv']) && isset($_POST['godina'])) {
 			$sifra = $_POST['sifra'];
-			$email = $_POST['email'];
 			$naziv = $_POST['naziv'];
 			$godina = $_POST['godina'];
 
             // ... upisuj
-			$tabela->InsertKurs($sifra, $email, $naziv, $godina);
+			$tabela->InsertKurs($sifra, $naziv, $godina);
 		}		
 	}
 ?>
@@ -447,7 +446,6 @@ table.table .avatar {
 							<tr> 
 								<th>.</th>
 								<th>Sifra kursa</th>
-								<th>Sifra profesora</th>
 								<th>Naziv</th>								
 								<th>Godina</th>
 							</tr>
@@ -480,10 +478,6 @@ table.table .avatar {
 								<label>Sifra kursa </label>								
 								<input type="text" class="form-control" name="sifra" required>
 							</div>	
-							<div class="form-group">
-								<label>Info o profesoru</label>
-								<input type="email" class="form-control" name="email" required>
-							</div>
 							<div class="form-group">
 								<label>Naziv</label>
 								<input type="text" class="form-control" name="naziv" required>

@@ -57,7 +57,7 @@
     <style>
         body
         {
-	        margin: 0;
+	        padding-top:20px;
         }
         .header {
 	        text-align: center;
@@ -265,13 +265,16 @@
 	    <div class="header">
 		    <p id="header_p"><img src="logo_moodle2.png" /></p>
 	    </div>
-        <div class="navbar">
-		    <div class="dropdown">
-			    <button class="openSideNav"><i class="fa fa-align-justify"></i></button>
-		    </div>
-		    <a class="right_side" href="#home"><i class="fa fa-home"></i></a>
-	    </div>
-    </div>
+      <nav class="navbar sticky-top navbar-dark bg-dark">
+          
+            <div class="dropdown">
+              <!-- sa klikom da dugme se otvara stranicni meni-->
+                <button class="openSideNav"><i class="fa fa-align-justify"></i></button>
+            </div>
+            <a id="right_side" href="pocetna_strana.php"><i class="fa fa-home"></i></a>
+  
+      </nav>
+    
     <?php
       $kurs=$_SESSION['kurs'];
       $mysqli = new mysqli('localhost', 'root', '', 'portal') or die(mysqli_error($mysqli));
@@ -362,6 +365,7 @@
           </form>
         <?php endif; ?>
       </div>
+    </div>
     </div>
     <script>
       var i = 0;

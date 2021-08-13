@@ -19,6 +19,12 @@ $tabela = new KonekcijaSaBazom();
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
@@ -27,7 +33,7 @@ $tabela = new KonekcijaSaBazom();
 <title>E-Ucenje</title>
 <style>
 body {
-	margin: 0;
+        padding-top:20px;
 }
 
 .header {
@@ -67,19 +73,6 @@ body {
    margin-left: 50px;
 }
 
-/*
-button {
-   padding: 15px;
-   background-color: rgb(0, 27, 145);
-   color: rgb(255, 255, 255);
-   font-size: 20px;
-   border: none;
-   border-radius: 2%;
-}*/
-
-.main-content{
-   transition: 0.5s;
-}
 
 .navbar {
   overflow: hidden;
@@ -132,22 +125,27 @@ button {
     margin-bottom: 20px;
     margin-top: 20px;
     padding-top: 15px;
-    background-color: white;
-    border: 5px solid #333;
+    background-color: rgb(245, 239, 239);
+    background-clip: border-box;
+    border: 0 solid rgba(0,0,0,.125);
+    border-radius: .25rem;
     float: center;
     content: "";
     display: table;
     clear: both;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 20px;
 }
 
 #tekst h3{
-    margin-left:25px;
+    margin-left:20px;
     margin-right:30px;
     margin-bottom:20px;
 }
 
 #tekst p{
-    margin-left: 10px;
+    margin-left: 25px;
 }
 
 #tekst ul{
@@ -166,7 +164,7 @@ button {
 }
 
 #tekst ul li a:hover{
-    color: rgb(46, 218, 195);
+    color: #368B11;
 }
 
 </style>
@@ -241,42 +239,45 @@ button {
 		<p id="header_p"><img src="logo_moodle2.png" /></p>
 	</div>
 
-	<div class="navbar">
-		<div class="dropdown">
-		<!-- sa klikom da dugme se otvara stranicni meni-->
-			<button class="openSideNav"><i class="fa fa-align-justify"></i></button>
-		</div>
-		<!-- link koje ce da baca na pocetnu stranu od trenutno ulogovanog korisnika -->
-		<a class="right_side" href="pocetna_strana.php"><i class="fa fa-home"></i></a>
-	</div>	
-</div>
+	<nav class="navbar sticky-top navbar-dark bg-dark">
+          
+            <div class="dropdown">
+              <!-- sa klikom da dugme se otvara stranicni meni-->
+                <button class="openSideNav"><i class="fa fa-align-justify"></i></button>
+            </div>
+            <a id="right_side" href="pocetna_strana.php"><i class="fa fa-home"></i></a>
+  
+        </nav>
+
 <?php
     if($_SESSION["tipKorisnika"] == "student")
     {
 ?>
-        <div id="tekst">
-            <form action="proces.php" method="POST">
-                <input type="text" name="sifra" placeholder="šifra kursa" style=" margin-left:20px; margin-bottom:15px; width: 60%;">
-                <button class="btn btn-success" type="submit" name="dodaj_kurs_sifra"  style=" margin-left:20px; margin-right:20px; margin-bottom:15px; width: 150px; "><i class="material-icons">&#xE147;</i>  Dodaj kurs</button>
-            </form>
-        </div>
-        <div id="tekst">
-            <h3>Moji kursevi:</h3>
-            <ul>
+
+
+            <div id="tekst">
+                <form action="proces.php" method="POST">
+                    <input type="text" name="sifra" placeholder="šifra kursa" style=" margin-left:20px; margin-bottom:15px; width: 100px;">
+                    <button class="btn btn-success" type="submit" name="dodaj_kurs_sifra"  style=" margin-left:20px; margin-right:20px; margin-bottom:15px; width: 150px; "><i class="material-icons">&#xE147;</i>  Dodaj kurs</button>
+                </form>
+                <hr>
+                <h3>Moji kursevi:</h3>
+                <ul>
 <?php
-        $email=$_SESSION["idKorisnika"];
-        $mysqli = new mysqli('localhost', 'root', '', 'portal') or die(mysqli_error($mysqli));
-        $mysqli -> set_charset("utf8");
-        $result= $mysqli->query("SELECT * FROM prati INNER JOIN kurs ON prati.sifra_kursa=kurs.sifra_kursa WHERE prati.email_student='$email'") or die($mysqli->error);
-        while($row = $result->fetch_assoc())
-        {
+            $email=$_SESSION["idKorisnika"];
+            $mysqli = new mysqli('localhost', 'root', '', 'portal') or die(mysqli_error($mysqli));
+            $mysqli -> set_charset("utf8");
+            $result= $mysqli->query("SELECT * FROM prati INNER JOIN kurs ON prati.sifra_kursa=kurs.sifra_kursa WHERE prati.email_student='$email'") or die($mysqli->error);
+            while($row = $result->fetch_assoc())
+            {
 ?>
-                <li><a href="kurs.php?pocetna_kurs=<?php echo($row['sifra_kursa']); ?>"><?php echo($row['naziv']); ?></a></li>
+                    <li><a href="kurs.php?pocetna_kurs=<?php echo($row['sifra_kursa']); ?>"><?php echo($row['naziv']); ?></a></li>
 <?php        
-        }
+            }
 ?>
-            </ul>
-        </div>
+                </ul>
+            </div>
+
 <?php
     }
 ?>
@@ -284,16 +285,15 @@ button {
     if($_SESSION["tipKorisnika"] == "profesor")
     {
 ?>
-<!-- dodat kod-->
+
         <div id="tekst">
             <form action="proces.php" method="POST">
-                <input type="text" name="sifra" placeholder="šifra kursa" style=" margin-left:20px; margin-bottom:15px; width: 60%;">
+                <input type="text" name="sifra" placeholder="šifra kursa" style=" margin-left:20px; margin-bottom:15px; width: 100px;">
                 <button class="btn btn-success" type="submit" name="dodaj_kurs_sifra_profesor"  style=" margin-left:20px; margin-right:20px; margin-bottom:15px; width: 150px; "><i class="material-icons">&#xE147;</i>  Dodaj kurs</button>
             </form>
-        </div>
-<!--kraj dodatog koda-->
-        <div id="tekst">
+            <hr>
             <h3>Moji kursevi:</h3>
+            <hr>
             <p>Prva godina</p>
             <ul>
 <!-- promenjeni sql upiti u nastavku-->
@@ -310,6 +310,7 @@ button {
         }
 ?>
             </ul>
+            <hr>
             <p>Druga godina</p>
             <ul>
 <?php
@@ -322,6 +323,7 @@ button {
         }
 ?>
             </ul>
+            <hr>
             <p>Treća godina</p>
             <ul>
 <?php
@@ -334,6 +336,7 @@ button {
         }
 ?>
             </ul>
+            <hr>
             <p>Četvrta godina</p>
             <ul>
 <?php
@@ -357,6 +360,7 @@ button {
 ?>
         <div id="tekst">
             <h3>Svi kursevi:</h3>
+            <hr>
             <p>Prva godina</p>
             <ul>
 <?php
@@ -371,6 +375,7 @@ button {
         }
 ?>
             </ul>
+            <hr>
             <p>Druga godina</p>
             <ul>
 <?php
@@ -383,6 +388,7 @@ button {
         }
 ?>
             </ul>
+            <hr>
             <p>Treća godina</p>
             <ul>
 <?php
@@ -395,6 +401,7 @@ button {
         }
 ?>
             </ul>
+            <hr>
             <p>Četvrta godina</p>
             <ul>
 <?php
@@ -411,6 +418,7 @@ button {
 <?php
     }
 ?>
+</div>
 <script>
 var i = 0;
 

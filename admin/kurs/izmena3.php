@@ -67,14 +67,11 @@
 	</style>
 	
 	<?php 
-		$email = $naziv = $godina = $sifra = "";
-		$sifraErr = $emailErr = $imeErr = $prezimeErr = "";
+		$naziv = $godina = $sifra = "";
+		$sifraErr = $imeErr = $prezimeErr = "";
 		
 		if(isset($_GET['id'])) {
 			$sifra = $_GET['id'];
-		}
-		if(isset($_GET['prof'])) {
-			$email= $_GET['prof'];
 		}
 		if(isset($_GET['naziv'])) {
 			$naziv = $_GET['naziv'];
@@ -87,7 +84,6 @@
 			include '../../KonekcijaSaBazom.php';
 	        $tabela = new KonekcijaSaBazom();
 			
-            $Email = $_POST['emailZaIsmeniti'];
 			$Naziv = $_POST['nazivZaIsmeniti'];
 			$Godina = $_POST['godinaZaIsmeniti'];
 			$Sifra = $_POST['sifraZaIsmeniti'];
@@ -107,7 +103,7 @@
 			}  else if (!preg_match("/^[a-zA-Z-' ]*$/",$prezime)) {
 				$prezimeErr = "* Samo slova i prazno mesto su dozvoljeni";
 			} */else {
-				if($tabela->UpdateKurs($Sifra, $Email, $Naziv, $Godina)) {
+				if($tabela->UpdateKurs($Sifra, $Naziv, $Godina)) {
 					echo "<script language=\"javascript\">alert('Izmene su uspesno ucitane.');</script>";
 					header('Location: RadSaBazomKurseva.php');
 				}
@@ -134,12 +130,7 @@
 								<label>Sifra</label>
 								<span id="greska"><?php echo $sifraErr;?></span>
 								<input type="text" class="form-control" value="<?php echo $sifra; ?>" name="sifraZaIsmeniti" readonly>
-							</div>
-							<div class="form-group">
-								<label>Email</label>
-								<span id="greska"><?php echo $emailErr;?></span>
-								<input type="email" class="form-control" value="<?php echo $email; ?>" name="emailZaIsmeniti" required>
-							</div>				
+							</div>			
 							<div class="form-group">
 								<label>Naziv</label>
 								<span id="greska"><?php echo $imeErr;?></span>
