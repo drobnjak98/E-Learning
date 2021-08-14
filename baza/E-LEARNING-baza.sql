@@ -42,16 +42,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `portal`.`kurs` (
   `sifra_kursa` CHAR(6) CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci' NOT NULL,
-  `email_nastavnik` VARCHAR(255) CHARACTER SET 'latin1' COLLATE 'latin1_swedish_ci' NULL,
   `naziv` VARCHAR(50) CHARACTER SET 'utf8' COLLATE 'utf8_croatian_ci' NOT NULL,
   `godina` INT NOT NULL,
-  PRIMARY KEY (`sifra_kursa`),
-  INDEX `nastavnik_fk_idx` (`email_nastavnik` ASC) ,
-  CONSTRAINT `nastavnik_fk`
-    FOREIGN KEY (`email_nastavnik`)
-    REFERENCES `portal`.`nastavnik` (`email_nastavnik`)
-    ON DELETE SET NULL
-    ON UPDATE CASCADE)
+  PRIMARY KEY (`sifra_kursa`))
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
